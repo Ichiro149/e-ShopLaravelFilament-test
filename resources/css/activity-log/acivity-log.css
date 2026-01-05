@@ -1,18 +1,7 @@
-:root {
-    --bg-primary: #030305;
-    --bg-secondary: #0a0a0c;
-    --surface: #111114;
-    --surface-elevated: #18181b;
-    --border: rgba(255,255,255,0.06);
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --accent: #f59e0b;
-    --accent-glow: rgba(245,158,11,0.15);
-    --success: #22c55e;
-    --danger: #ef4444;
-    --gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
+/* ===============================================
+   Activity Log Page Styles
+   Uses unified variables from _variables.css
+   =============================================== */
 
 /* Base */
 .activity-log-page {
@@ -125,24 +114,26 @@
     gap: 10px;
     padding: 14px 28px;
     border-radius: 12px;
-    background: var(--gradient-amber);
-    color: #000;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #000 !important;
     font-weight: 600;
     font-size: 0.9375rem;
     border: none;
     cursor: pointer;
-    box-shadow: 0 8px 32px var(--accent-glow);
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .filter-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px var(--accent-glow);
+    box-shadow: 0 12px 40px rgba(245, 158, 11, 0.35);
+    color: #000 !important;
 }
 
 .filter-btn svg {
     width: 18px;
     height: 18px;
+    color: #000 !important;
 }
 
 .filter-reset {

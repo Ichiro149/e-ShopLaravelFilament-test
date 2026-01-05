@@ -1,17 +1,7 @@
-:root {
-    --bg-primary: #030305;
-    --bg-secondary: #0a0a0c;
-    --surface: #111114;
-    --surface-elevated: #18181b;
-    --border: rgba(255,255,255,0.06);
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --accent: #f59e0b;
-    --accent-glow: rgba(245,158,11,0.15);
-    --danger: #ef4444;
-    --gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
+/**
+ * Products Index Page Styles
+ * Uses unified design system from _variables.css
+ */
 
 body { background: var(--bg-primary); color: var(--text-primary); -webkit-font-smoothing: antialiased; }
 h1, h2, h3, h4 { color: var(--text-primary); }
@@ -107,13 +97,18 @@ input:focus, select:focus, textarea:focus {
     display: inline-flex !important; align-items: center; justify-content: center; gap: 0.5rem;
     padding: 0.75rem 1rem !important; min-height: 44px; width: 100%;
     border-radius: 12px !important;
-    background: var(--gradient-amber) !important;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
     color: #000 !important; font-weight: 700 !important;
     border: none !important;
-    box-shadow: 0 8px 32px var(--accent-glow) !important;
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.25) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.apply-btn:hover { transform: translateY(-2px); }
+.apply-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 12px 40px rgba(245, 158, 11, 0.35) !important;
+    color: #000 !important;
+}
+.apply-btn svg { color: #000 !important; stroke: #000 !important; }
 
 /* Filter Drawer - Premium Redesign */
 .filters-backdrop { 
@@ -308,7 +303,7 @@ input:focus, select:focus, textarea:focus {
 .filter-checkbox input {
     width: 18px;
     height: 18px;
-    accent-color: #f59e0b;
+    accent-color: var(--accent);
     cursor: pointer;
     flex-shrink: 0;
 }
@@ -370,8 +365,8 @@ input:focus, select:focus, textarea:focus {
 
 .filter-price-input input:focus {
     outline: none;
-    border-color: #f59e0b;
-    box-shadow: 0 0 0 3px rgba(245,158,11,0.15);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
     background: rgba(0,0,0,0.6);
 }
 
@@ -383,9 +378,9 @@ input:focus, select:focus, textarea:focus {
     gap: 0.625rem;
     padding: 1rem 1.25rem;
     min-height: 52px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: #000;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #000 !important;
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: -0.01em;
@@ -399,6 +394,7 @@ input:focus, select:focus, textarea:focus {
 
 .filter-apply-btn:hover {
     transform: translateY(-2px);
+    color: #000 !important;
     box-shadow: 
         0 12px 40px rgba(245,158,11,0.4),
         0 0 0 1px rgba(255,255,255,0.15) inset;
@@ -406,11 +402,14 @@ input:focus, select:focus, textarea:focus {
 
 .filter-apply-btn:active {
     transform: translateY(0);
+    color: #000 !important;
 }
 
 .filter-apply-btn svg {
     width: 18px;
     height: 18px;
+    color: #000 !important;
+    stroke: #000 !important;
 }
 
 .filter-clear-btn {
@@ -514,8 +513,8 @@ main .grid > div[x-show="viewMode === 'grid'"] > .p-4 > button.w-full { flex-shr
 
 .toolbar-select:focus {
     outline: none;
-    border-color: #f59e0b;
-    box-shadow: 0 0 0 2px rgba(245,158,11,0.15);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
 /* Light theme toolbar */
@@ -593,17 +592,8 @@ html.theme-light .toolbar-select:focus {
 
 /* ============================================
    LIGHT THEME OVERRIDES
+   Light theme variables are defined in _variables.css
    ============================================ */
-html.theme-light {
-    --bg-primary: #f8f9fa;
-    --bg-secondary: #ffffff;
-    --surface: #ffffff;
-    --surface-elevated: #fafafa;
-    --border: rgba(0,0,0,0.08);
-    --text-primary: #18181b;
-    --text-secondary: #52525b;
-    --text-muted: #71717a;
-}
 
 html.theme-light,
 html.theme-light body {

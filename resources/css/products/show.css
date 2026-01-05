@@ -1,27 +1,7 @@
-:root {
-    --bg-primary: #030305;
-    --bg-secondary: #0a0a0c;
-    --surface: #111114;
-    --surface-elevated: #18181b;
-    --border: rgba(255,255,255,0.06);
-    --border-hover: rgba(255,255,255,0.12);
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --accent: #f59e0b;
-    --accent-hover: #fbbf24;
-    --accent-glow: rgba(245,158,11,0.15);
-    --success: #22c55e;
-    --success-glow: rgba(34,197,94,0.15);
-    --danger: #ef4444;
-    --gradient-card: linear-gradient(180deg, var(--surface), var(--bg-secondary));
-    --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    --shadow-card: 0 20px 60px rgba(0,0,0,0.5);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-}
+/**
+ * Product Show Page Styles
+ * Uses unified design system from _variables.css
+ */
 
 /* Base */
 .product-page {
@@ -125,7 +105,7 @@
     overflow: hidden;
     cursor: pointer;
     opacity: 0.6;
-    transition: all 0.2s;
+    transition: var(--transition-base);
 }
 
 .thumb-btn img { width: 100%; height: 100%; object-fit: cover; }
@@ -250,11 +230,11 @@
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    background: var(--gradient-card);
+    background: var(--gradient-surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: var(--transition-base);
     min-width: 180px;
 }
 
@@ -382,15 +362,16 @@
 .btn-wishlist svg { width: 20px; height: 20px; }
 
 .btn-cart {
-    background: var(--gradient-accent);
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     border: none;
-    color: #000;
-    box-shadow: 0 8px 32px var(--accent-glow);
+    color: #000 !important;
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.25);
 }
 
 .btn-cart:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px var(--accent-glow);
+    box-shadow: 0 12px 40px rgba(245, 158, 11, 0.35);
+    color: #000 !important;
 }
 
 .btn-cart:disabled,
@@ -400,7 +381,7 @@
     transform: none;
 }
 
-.btn-cart svg { width: 20px; height: 20px; }
+.btn-cart svg { width: 20px; height: 20px; color: #000 !important; stroke: #000 !important; }
 
 /* Section Card */
 .section-card {

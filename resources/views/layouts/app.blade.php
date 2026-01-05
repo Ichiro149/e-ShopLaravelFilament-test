@@ -607,17 +607,32 @@
             align-items: center;
             justify-content: center;
             padding: 8px 16px;
-            background: var(--accent);
-            color: #000;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #000 !important;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.875rem;
             gap: 6px;
-            transition: opacity 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
         }
         
-        .checkout-btn:hover { opacity: 0.9; }
+        .checkout-btn svg {
+            color: #000 !important;
+            fill: #000 !important;
+        }
+        
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+            color: #000 !important;
+        }
+        
+        .checkout-btn:hover svg {
+            color: #000 !important;
+            fill: #000 !important;
+        }
 
         /* Profile Dropdown */
         .profile-dropdown {

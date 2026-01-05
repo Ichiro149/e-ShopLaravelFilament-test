@@ -1,25 +1,17 @@
+/**
+ * Profile Edit Page Styles
+ * Uses unified design system from _variables.css
+ */
+
+/* Page-specific variables */
 :root {
-    --bg-primary: #030305;
-    --bg-secondary: #0a0a0c;
-    --surface: #111114;
-    --surface-elevated: #18181b;
-    --border: rgba(255,255,255,0.06);
-    --border-subtle: rgba(255,255,255,0.03);
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --accent: #f59e0b;
-    --accent-glow: rgba(245,158,11,0.15);
-    --success: #22c55e;
-    --danger: #ef4444;
     --purple: #8b5cf6;
-    --gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
 /* Base */
 .profile-page {
-    background: #030305 !important;
-    color: #fafafa !important;
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
     min-height: 100vh;
     padding: 40px 0 80px;
     -webkit-font-smoothing: antialiased;
@@ -66,13 +58,14 @@
 .avatar-upload-btn {
     position: absolute; bottom: -6px; right: -6px;
     width: 32px; height: 32px;
-    background: var(--gradient-amber);
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     border-radius: 10px; border: 2px solid var(--bg-primary);
     display: flex; align-items: center; justify-content: center;
-    color: #000; cursor: pointer;
-    transition: all 0.2s; box-shadow: 0 4px 12px var(--accent-glow);
+    color: #000 !important; cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
 }
 .avatar-upload-btn:hover { transform: scale(1.1); }
+.avatar-upload-btn svg { color: #000 !important; stroke: #000 !important; }
 
 /* Profile Info */
 .profile-info { flex: 1; }
@@ -151,14 +144,14 @@
 .btn-primary {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     padding: 14px 24px;
-    background: var(--gradient-amber);
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     border: none; border-radius: 12px;
-    color: #000; font-weight: 600; font-size: 0.9375rem;
+    color: #000 !important; font-weight: 600; font-size: 0.9375rem;
     cursor: pointer;
-    box-shadow: 0 8px 24px var(--accent-glow);
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px var(--accent-glow); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245, 158, 11, 0.25); color: #000 !important; }
 .btn-danger {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     padding: 12px 20px;
@@ -196,9 +189,10 @@
 .admin-icon { color: var(--accent); }
 .account-active-badge {
     padding: 4px 10px;
-    background: var(--gradient-amber);
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
     border-radius: 6px;
-    font-size: 0.6875rem; font-weight: 700; color: #000;
+    font-size: 0.6875rem; font-weight: 700; color: #f59e0b;
     text-transform: uppercase; letter-spacing: 0.5px;
 }
 .account-card--add { border-style: dashed; border-color: rgba(255,255,255,0.1); }
@@ -233,18 +227,8 @@
 
 /* ============================================
    LIGHT THEME OVERRIDES
+   Light theme variables are defined in _variables.css
    ============================================ */
-html.theme-light {
-    --bg-primary: #f8f9fa;
-    --bg-secondary: #ffffff;
-    --surface: #ffffff;
-    --surface-elevated: #fafafa;
-    --border: rgba(0,0,0,0.08);
-    --border-subtle: rgba(0,0,0,0.04);
-    --text-primary: #18181b;
-    --text-secondary: #52525b;
-    --text-muted: #71717a;
-}
 
 /* Force dark theme when theme-dark class is present */
 html.theme-dark .profile-page {

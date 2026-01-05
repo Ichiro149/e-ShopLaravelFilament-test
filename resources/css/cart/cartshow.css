@@ -64,13 +64,13 @@ input[type="radio"]:checked + div { color: var(--accent); }
 
 button { border-radius: 12px !important; font-weight: 600; }
 .bg-green-600, .bg-blue-600 {
-    background: var(--gradient-amber) !important;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
     color: #000 !important;
     font-weight: 600;
-    box-shadow: 0 8px 32px var(--accent-glow);
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.bg-green-600:hover, .bg-blue-600:hover { transform: translateY(-2px); box-shadow: 0 12px 40px var(--accent-glow); }
+.bg-green-600:hover, .bg-blue-600:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(245, 158, 11, 0.25); color: #000 !important; }
 
 main { max-width: 1120px; margin: 28px auto 48px; padding: 0 16px; box-sizing: border-box; }
 
@@ -144,17 +144,17 @@ main { max-width: 1120px; margin: 28px auto 48px; padding: 0 16px; box-sizing: b
 .form-label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
 
 .btn-primary {
-    background: var(--gradient-amber);
-    color: #000;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #000 !important;
     font-weight: 700;
     padding: 12px 24px;
     border-radius: 12px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 8px 32px var(--accent-glow);
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 40px var(--accent-glow); }
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(245, 158, 11, 0.25); color: #000 !important; }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-secondary {

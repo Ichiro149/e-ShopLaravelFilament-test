@@ -1,8 +1,21 @@
+/* ============================================
+ * MAIN APPLICATION STYLES
+ * ============================================
+ * Import unified design system first,
+ * then Tailwind, then app-specific overrides
+ */
+
+/* Import unified design system */
+@import './_variables.css';
+@import './_components.css';
+@import './_utilities.css';
+@import './_toasts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ===== GLOBAL DARK THEME ===== */
+/* ===== GLOBAL DARK THEME (Legacy - kept for compatibility) ===== */
 :root {
     --bg: #0b0b0b;
     --bg-gradient: radial-gradient(ellipse at top, #111 0%, #000 70%);

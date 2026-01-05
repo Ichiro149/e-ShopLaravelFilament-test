@@ -82,8 +82,14 @@
                                     @endphp
                                     <p class="font-semibold">${{ number_format($unitPrice * $item->quantity, 2) }}</p>
                                     <button @click="removeItem({{ $item->id }})" 
-                                            class="text-red-500 hover:text-red-700 text-sm">
-                                        {{ __('cart.remove') }}
+                                            class="remove-item-btn"
+                                            title="{{ __('cart.remove') }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
@@ -127,7 +133,7 @@
                                        class="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                        placeholder="XXXX-XXXX">
                                 <button @click="applyCoupon()" 
-                                        class="flex-none bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                                        class="cart-apply-btn">
                                     {{ __('cart.apply') }}
                                 </button>
                             </div>
@@ -135,7 +141,7 @@
                         @endif
 
                         <a href="{{ route('checkout.show') }}" 
-                           class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg text-center font-medium hover:bg-blue-700 transition-colors block">
+                           class="cart-checkout-btn">
                             {{ __('cart.proceed_checkout') }}
                         </a>
                     </div>
