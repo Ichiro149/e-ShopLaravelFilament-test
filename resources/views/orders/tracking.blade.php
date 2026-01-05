@@ -261,6 +261,9 @@
                             @endif
                             <div class="item-info">
                                 <p class="item-name">{{ $item->product_name }}</p>
+                                @if($item->variant_name)
+                                    <p class="item-variant text-sm text-gray-500">{{ $item->variant_name }}</p>
+                                @endif
                                 <p class="item-qty">{{ __('order.quantity') }}: {{ $item->quantity }}</p>
                             </div>
                             <span class="item-price">${{ number_format($item->total, 2) }}</span>

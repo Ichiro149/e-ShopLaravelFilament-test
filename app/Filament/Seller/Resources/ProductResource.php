@@ -19,6 +19,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Filament\Seller\Resources\ProductResource\RelationManagers\VariantsRelationManager;
 
 class ProductResource extends Resource
 {
@@ -270,7 +271,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VariantsRelationManager::class,
         ];
     }
 

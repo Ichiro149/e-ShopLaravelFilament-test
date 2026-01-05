@@ -76,7 +76,11 @@
                                 </div>
 
                                 <div class="text-right">
-                                    <p class="font-semibold">${{ number_format($item->product->getCurrentPrice() * $item->quantity, 2) }}</p>
+                                    @php
+                                        $priceSource = $item->variant ?? $item->product;
+                                        $unitPrice = $priceSource->sale_price ?? $priceSource->price ?? 0;
+                                    @endphp
+                                    <p class="font-semibold">${{ number_format($unitPrice * $item->quantity, 2) }}</p>
                                     <button @click="removeItem({{ $item->id }})" 
                                             class="text-red-500 hover:text-red-700 text-sm">
                                         {{ __('cart.remove') }}

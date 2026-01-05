@@ -1,4 +1,10 @@
-document.addEventListener('alpine:init', () => {
+// Product page Alpine component
+let productPageRegistered = false;
+
+function registerProductPageComponent() {
+    if (productPageRegistered) return true;
+    if (typeof Alpine === 'undefined') return false;
+    
     Alpine.data('productPage', () => ({
         selectedImage: 0,
         quantity: 1,
@@ -22,13 +28,6 @@ document.addEventListener('alpine:init', () => {
             }
             // attach variant button handlers if present
             this.attachVariantButtons();
-            // Listen for global toast events so window.showToast is bridged to Alpine
-            window.addEventListener('app:toast', (e) => {
-                try {
-                    const detail = e && e.detail ? e.detail : {};
-                    this.showNotification(detail.message || '', detail.type || 'success', detail.productName || '');
-                } catch (err) { console.warn('app:toast handler error', err); }
-            });
         },
 
         attachVariantButtons() {
@@ -193,7 +192,7 @@ document.addEventListener('alpine:init', () => {
             if (this.maxQuantity !== undefined && Number(this.quantity) > Number(this.maxQuantity)) {
                 const req = Number(this.quantity);
                 const avail = Number(this.maxQuantity);
-                window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: `Requested quantity (${req}) not available. Only ${avail} in stock.`, type: 'error' } }));
+                this.showNotification(`Requested quantity (${req}) not available. Only ${avail} in stock.`, 'error');
                 return;
             }
 
@@ -218,7 +217,7 @@ document.addEventListener('alpine:init', () => {
 
                 if (!response.ok && !data.success) {
                     console.error('Add to cart failed', response.status, data);
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: data.message || `Failed to add to cart (HTTP ${response.status})`, type: 'error' } }));
+                    this.showNotification(data.message || `Failed to add to cart (HTTP ${response.status})`, 'error');
                     return;
                 }
 
@@ -233,14 +232,15 @@ document.addEventListener('alpine:init', () => {
                         }
                     }
                     const what = variantLabel ? ` (${variantLabel})` : '';
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data.message || 'Product added to cart successfully!') + what, type: 'success' } }));
-                    try { if (Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('cart', 1); } catch(e){}
+                    this.showNotification((data.message || 'Product added to cart successfully!') + what, 'success');
+                    // Update cart counter by actual quantity added
+                    try { if (Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('cart', this.quantity); } catch(e){}
                 } else {
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: data.message || 'Error adding product to cart', type: 'error' } }));
+                    this.showNotification(data.message || 'Error adding product to cart', 'error');
                 }
             } catch (error) {
                 console.error('Error adding to cart:', error);
-                window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: 'Error adding product to cart', type: 'error' } }));
+                this.showNotification('Error adding product to cart', 'error');
             } finally {
                 this.loading = false;
             }
@@ -268,13 +268,15 @@ document.addEventListener('alpine:init', () => {
 
                     if (data && data.success) {
                         const what = variantLabel ? ` (${variantLabel})` : '';
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data.message || 'Added to wishlist') + what, type: 'success' } }));
+                        this.showNotification((data.message || 'Added to wishlist') + what, 'success');
+                        // Update wishlist counter
+                        try { if (Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('wishlist', 1); } catch(e){}
                     } else {
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: data.message || 'Failed to add to wishlist', type: 'error' } }));
+                        this.showNotification(data.message || 'Failed to add to wishlist', 'error');
                     }
                 } catch (err) {
                     console.error('addToWishlist error', err);
-                window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: 'Network error', type: 'error' } }));
+                    this.showNotification('Network error', 'error');
                 } finally {
                     this.loading = false;
                 }
@@ -296,12 +298,30 @@ document.addEventListener('alpine:init', () => {
             }
         },
     }));
+    
+    productPageRegistered = true;
+    return true;
+}
+
+// Try to register immediately if Alpine is already loaded
+if (typeof Alpine !== 'undefined') {
+    registerProductPageComponent();
+}
+
+// Also register on alpine:init in case Alpine loads later
+document.addEventListener('alpine:init', () => {
+    registerProductPageComponent();
 });
 
 // Note: DOM fallback removed. All toasts are now dispatched via `app:toast` CustomEvent
 
 // Fallback DOM handlers so UI works even if Alpine isn't ready
 document.addEventListener('DOMContentLoaded', () => {
+    // Try again after DOM is ready in case Alpine was loaded late
+    if (typeof Alpine !== 'undefined') {
+        registerProductPageComponent();
+    }
+    
     // ensure initial quantity visible and set to 1 if missing/invalid
     let qtyInput = document.getElementById('product-quantity');
     if (qtyInput) {
@@ -340,11 +360,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Fallback Add to Cart (works without Alpine)
+    // Fallback Add to Cart (works without Alpine) - ONLY if Alpine not handling
     document.querySelectorAll('[data-add-to-cart]').forEach(btn => {
         btn.addEventListener('click', async (e) => {
-            // if Alpine handled it already, let it run (avoid double submit)
-            // but still provide fallback for non-Alpine case
+            // Skip if Alpine is handling this (check if productPage component is active)
+            if (productPageRegistered && typeof Alpine !== 'undefined') {
+                // Alpine will handle it via @click
+                return;
+            }
+            
             const productId = btn.getAttribute('data-product-id');
             const qtyEl = document.getElementById('product-quantity');
             const qty = Number(qtyEl ? qtyEl.value : 1) || 1;
@@ -381,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data && data.success) {
                         window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: data.message || 'Added to cart', type: 'success' } }));
                     // update global Alpine store if present
-                    try { if (window.Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('cart', 1); } catch(e){}
+                    try { if (window.Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('cart', qty); } catch(e){}
                 } else {
                         window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data && data.message) || 'Failed to add to cart', type: 'error' } }));
                 }
@@ -395,9 +419,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Fallback Add to Wishlist (works without Alpine)
+    // Fallback Add to Wishlist (works without Alpine) - ONLY if Alpine not handling
     document.querySelectorAll('[data-add-to-wishlist]').forEach(btn => {
         btn.addEventListener('click', async (e) => {
+            // Skip if Alpine is handling this
+            if (productPageRegistered && typeof Alpine !== 'undefined') {
+                // Alpine will handle it via @click
+                return;
+            }
+            
             const productId = btn.getAttribute('data-product-id');
             // include variant_id if present in select
             const variantSelect = document.getElementById('product-variant');
@@ -430,6 +460,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data && data.success) {
                     const what = variantLabel ? ` (${variantLabel})` : '';
                         window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data.message || 'Added to wishlist') + what, type: 'success' } }));
+                    // update global Alpine store if present
+                    try { if (window.Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('wishlist', 1); } catch(e){}
                 } else {
                         window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data && data.message) || 'Failed to add to wishlist', type: 'error' } }));
                 }

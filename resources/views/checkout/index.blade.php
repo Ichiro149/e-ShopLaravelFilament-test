@@ -66,9 +66,23 @@
                                     </div>
                                     <div class="summary-details">
                                         <div class="summary-name">{{ $item->product->name }}</div>
+                                        @if($item->variant)
+                                            @php
+                                                $v = $item->variant;
+                                                $attrs = is_array($v->attributes) ? collect($v->attributes)->map(fn($val,$k) => "$k: $val")->join(', ') : null;
+                                                $variantLabel = $attrs ?: ($v->sku ?? '');
+                                            @endphp
+                                            @if($variantLabel)
+                                                <div class="summary-meta text-gray-500">{{ $variantLabel }}</div>
+                                            @endif
+                                        @endif
                                         <div class="summary-meta">{{ __('checkout.qty') }}: {{ $item->quantity }}</div>
                                     </div>
-                                    <div class="summary-price">${{ number_format($item->product->price * $item->quantity, 2) }}</div>
+                                    @php
+                                        $priceSource = $item->variant ?? $item->product;
+                                        $unitPrice = $priceSource->sale_price ?? $priceSource->price ?? 0;
+                                    @endphp
+                                    <div class="summary-price">${{ number_format($unitPrice * $item->quantity, 2) }}</div>
                                 </div>
                             @endforeach
                         </div>

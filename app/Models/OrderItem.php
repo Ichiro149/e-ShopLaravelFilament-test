@@ -12,15 +12,17 @@ class OrderItem extends Model
         'product_id',
         'variant_id',
         'product_name',
+        'variant_name',
         'quantity',
-        'price',           // старое поле
-        'product_price',   // ДОБАВЬТЕ если его нет
+        'price',
+        'product_price',
         'total',
     ];
 
     protected $casts = [
         'product_price' => 'decimal:2',
         'total' => 'decimal:2',
+        'price' => 'decimal:2',
     ];
 
     public function order(): BelongsTo
@@ -31,5 +33,21 @@ class OrderItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function variant(): BelongsTo
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
+    }
+
+    /**
+     * Get display name including variant info
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        if ($this->variant_name) {
+            return $this->product_name . ' (' . $this->variant_name . ')';
+        }
+        return $this->product_name;
     }
 }

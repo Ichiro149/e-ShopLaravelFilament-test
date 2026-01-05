@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Filament\Resources\ProductResource\RelationManagers;
+namespace App\Filament\Seller\Resources\ProductResource\RelationManagers;
 
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class VariantsRelationManager extends RelationManager
 {
     protected static string $relationship = 'variants';
 
-    protected static ?string $title = 'Variants';
+    protected static ?string $title = 'Product Variants';
 
     public function form(Form $form): Form
     {

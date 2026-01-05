@@ -50,6 +50,8 @@
 
     @stack('styles')
 
+    @stack('head-scripts')
+
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
 
     <script>
@@ -213,6 +215,11 @@
                 },
                 setNotificationsCount(count) {
                     this.notificationsCount = Number(count);
+                },
+                increment(type, amount = 1) {
+                    if (type === 'cart') this.cartCount += Number(amount);
+                    if (type === 'wishlist') this.wishlistCount += Number(amount);
+                    if (type === 'notifications') this.notificationsCount += Number(amount);
                 },
                 incrementWishlist() {
                     this.wishlistCount++;

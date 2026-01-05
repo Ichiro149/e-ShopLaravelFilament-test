@@ -3,31 +3,62 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     public function up(): void
     {
         if (Schema::hasTable('cart_items')) {
-            Schema::table('cart_items', function (Blueprint $table) {
-                // drop old unique index if exists
+            // First, check if the new unique index already exists
+            $indexExists = collect(DB::select("SHOW INDEX FROM cart_items WHERE Key_name = 'cart_items_user_product_variant_unique'"))->isNotEmpty();
+            
+            if (!$indexExists) {
+                Schema::table('cart_items', function (Blueprint $table) {
+                    // Add variant_id column if not exists
+                    if (!Schema::hasColumn('cart_items', 'variant_id')) {
+                        $table->unsignedBigInteger('variant_id')->nullable()->after('product_id');
+                    }
+                });
+                
+                // Try to drop old unique index if it exists and is not needed by FK
                 try {
-                    $table->dropUnique(['user_id', 'product_id']);
+                    // Check if the old unique index exists
+                    $oldIndexExists = collect(DB::select("SHOW INDEX FROM cart_items WHERE Key_name = 'cart_items_user_id_product_id_unique'"))->isNotEmpty();
+                    
+                    if ($oldIndexExists) {
+                        // Drop foreign keys that might depend on this index first
+                        Schema::table('cart_items', function (Blueprint $table) {
+                            try {
+                                $table->dropForeign(['user_id']);
+                            } catch (\Exception $e) {}
+                        });
+                        
+                        Schema::table('cart_items', function (Blueprint $table) {
+                            try {
+                                $table->dropUnique('cart_items_user_id_product_id_unique');
+                            } catch (\Exception $e) {}
+                        });
+                        
+                        // Re-add foreign key
+                        Schema::table('cart_items', function (Blueprint $table) {
+                            try {
+                                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                            } catch (\Exception $e) {}
+                        });
+                    }
                 } catch (\Exception $e) {
-                    // ignore if index name differs or not present
+                    // Ignore errors, the unique might not exist or be different
+                }
+                
+                // Create new composite unique index
+                Schema::table('cart_items', function (Blueprint $table) {
                     try {
-                        $table->dropUnique('cart_items_user_id_product_id_unique');
-                    } catch (\Exception $_) {}
-                }
-
-                // add new unique composite including variant_id
-                if (! Schema::hasColumn('cart_items', 'variant_id')) {
-                    // variant_id column should already be added by prior migration; if not, add nullable
-                    $table->foreignId('variant_id')->nullable()->after('product_id')->constrained('product_variants')->nullOnDelete();
-                }
-
-                // create composite unique index
-                $table->unique(['user_id', 'product_id', 'variant_id'], 'cart_items_user_product_variant_unique');
-            });
+                        $table->unique(['user_id', 'product_id', 'variant_id'], 'cart_items_user_product_variant_unique');
+                    } catch (\Exception $e) {
+                        // Index might already exist
+                    }
+                });
+            }
         }
     }
 
@@ -38,9 +69,6 @@ return new class extends Migration {
                 try {
                     $table->dropUnique('cart_items_user_product_variant_unique');
                 } catch (\Exception $e) {}
-
-                // restore old unique on user_id + product_id
-                $table->unique(['user_id', 'product_id']);
             });
         }
     }

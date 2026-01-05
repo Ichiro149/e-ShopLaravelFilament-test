@@ -197,7 +197,9 @@ class CartController extends Controller
         }
 
         $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
+            $source = $item->variant ?? $item->product;
+            $price = $source->sale_price ?? $source->price ?? 0;
+            return $price * $item->quantity;
         });
 
         $discount = 0;
@@ -238,7 +240,8 @@ class CartController extends Controller
 
             // Подсчёт суммы
             $cartTotal = $cartItems->sum(function ($item) {
-                return $item->product->getCurrentPrice() * $item->quantity;
+                $source = $item->variant ?? $item->product;
+                return ($source->sale_price ?? $source->price ?? 0) * $item->quantity;
             });
 
             // Получаем купон из сессии
@@ -299,12 +302,22 @@ class CartController extends Controller
                 foreach ($cartItems as $item) {
                     $variant = $item->variant;
                     $price = $variant ? ($variant->sale_price ?? $variant->price) : $item->product->getCurrentPrice();
+                    
+                    // Build variant name for display
+                    $variantName = null;
+                    if ($variant) {
+                        $attrs = is_array($variant->attributes) 
+                            ? collect($variant->attributes)->map(fn($v, $k) => "$k: $v")->join(', ')
+                            : null;
+                        $variantName = $attrs ?: $variant->sku;
+                    }
 
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $item->product_id,
                         'variant_id' => $item->variant_id ?? null,
                         'product_name' => $item->product->name,
+                        'variant_name' => $variantName,
                         'quantity' => $item->quantity,
                         'product_price' => $price,
                         'total' => $price * $item->quantity,
@@ -429,10 +442,12 @@ class CartController extends Controller
             return redirect()->route('login')->with('error', 'Please login to view your cart.');
         }
 
-        $cartItems = \App\Models\CartItem::with('product')->where('user_id', $userId)->get();
+        $cartItems = \App\Models\CartItem::with(['product', 'variant'])->where('user_id', $userId)->get();
 
         $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->getCurrentPrice() * $item->quantity;
+            $source = $item->variant ?? $item->product;
+            $price = $source->sale_price ?? $source->price ?? 0;
+            return $price * $item->quantity;
         });
 
         // Получаем купон из сессии

@@ -6,7 +6,7 @@
     @vite(['resources/css/products/show.css','resources/css/products/productindex.css'])
 @endpush
 
-@push('scripts')
+@push('head-scripts')
     @vite('resources/js/products/show.js')
 @endpush
 

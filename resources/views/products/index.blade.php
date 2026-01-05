@@ -206,17 +206,19 @@
                         <!-- Grid View -->
                         <div x-show="viewMode === 'grid'" class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 group">
                             <div class="aspect-square bg-gray-200 relative overflow-hidden">
-                                @if($product->getPrimaryImage())
-                                    <img src="{{ asset('storage/' . $product->getPrimaryImage()->image_path) }}" 
-                                         alt="{{ $product->name }}"
-                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center">
+                                <a href="{{ route('products.show', $product) }}" class="block w-full h-full">
+                                    @if($product->getPrimaryImage())
+                                        <img src="{{ asset('storage/' . $product->getPrimaryImage()->image_path) }}" 
+                                             alt="{{ $product->name }}"
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer">
+                                    @else
+                                    <div class="w-full h-full flex items-center justify-center cursor-pointer">
                                         <svg class="w-20 h-20 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                         </svg>
                                     </div>
-                                @endif
+                                    @endif
+                                </a>
                                 @if($product->sale_price)
                                     <div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
                                         -{{ $product->getDiscountPercentage() }}%
@@ -268,31 +270,24 @@
                                         @endif
                                     </div>
                                 </div>
-                                <button @click="addToCart({{ $product->id }}, '{{ addslashes($product->name) }}')"
-                                        :disabled="!{{ $product->isInStock() ? 'true' : 'false' }} || loading"
-                                        class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center">
-                                    <img src="{{ asset('images/icons/cart-sm.svg') }}" alt="{{ __('products.add_to_cart') }}" class="cart-icon-sm mr-2">
-                                    <span x-show="!loading">
-                                        {{ $product->isInStock() ? __('products.add_to_cart') : __('products.out_of_stock') }}
-                                    </span>
-                                    <span x-show="loading">{{ __('common.loading') }}</span>
-                                </button>
                             </div>
                         </div>
                         <!-- List View -->
                         <div x-show="viewMode === 'list'" class="bg-white rounded-lg shadow-sm p-6 flex space-x-6">
                             <div class="w-32 h-32 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden relative">
-                                @if($product->getPrimaryImage())
-                                    <img src="{{ asset('storage/' . $product->getPrimaryImage()->image_path) }}" 
-                                         alt="{{ $product->name }}"
-                                         class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center">
-                                        <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg>
-                                    </div>
-                                @endif
+                                <a href="{{ route('products.show', $product) }}" class="block w-full h-full">
+                                    @if($product->getPrimaryImage())
+                                        <img src="{{ asset('storage/' . $product->getPrimaryImage()->image_path) }}" 
+                                             alt="{{ $product->name }}"
+                                             class="w-full h-full object-cover cursor-pointer">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center cursor-pointer">
+                                            <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                </a>
                                 <button @click="toggleWishlist({{ $product->id }}, '{{ addslashes($product->name) }}')"
                                         :class="isInWishlist({{ $product->id }}) ? 'active' : ''"
                                         class="products-wish absolute top-2 right-2"
@@ -336,14 +331,7 @@
                                         </div>
                                         <span class="text-sm text-gray-500 ml-1">({{ $product->reviews_count }} {{ __('products.reviews') }})</span>
                                     </div>
-                                    <div class="flex items-center space-x-3">
-                                                                                <button @click="addToCart({{ $product->id }})" 
-                                                                                                :disabled="!{{ $product->isInStock() ? 'true' : 'false' }} || loading"
-                                                                                                class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors inline-flex items-center">
-                                                                                                <img src="{{ asset('images/icons/cart-sm.svg') }}" alt="{{ __('products.add_to_cart') }}" class="cart-icon-sm mr-2">
-                                                                                        {{ $product->isInStock() ? __('products.add_to_cart') : __('products.out_of_stock') }}
-                                                                                </button>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
