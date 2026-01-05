@@ -46,6 +46,14 @@ return [
     'no_reviews' => 'No reviews',
     'network_error' => 'Network Error',
     'removed_from_wishlist' => 'Removed from Wishlist',
+    'failed_to_add_to_cart' => 'Failed to add to cart',
+    'error_adding_to_cart' => 'Error adding product to cart',
+    'failed_to_add_to_wishlist' => 'Failed to add to wishlist',
+    'requested_qty_not_available' => 'Requested quantity (:requested) not available. Only :available in stock.',
+    'in_stock_count' => ':count in stock',
+    'select_variant_first' => 'Please select a variant first',
+    'variant_out_of_stock' => 'Selected variant is out of stock',
+    'adding' => 'Adding...',
     
     // Product page
     'description' => 'Description',

@@ -1,0 +1,75 @@
+<?php
+
+return [
+    'title' => 'Darbību žurnāls',
+    'all_activities' => 'Visas darbības',
+    'recent_activities' => 'Nesenās darbības',
+    'no_activities' => 'Nav darbību',
+    
+    // Filters
+    'filter_by_type' => 'Filtrēt pēc veida',
+    'filter_by_date' => 'Filtrēt pēc datuma',
+    'all_types' => 'Visi veidi',
+    'all_time' => 'Visu laiku',
+    'today' => 'Šodien',
+    'this_week' => 'Šonedēļ',
+    'this_month' => 'Šomēnes',
+    'show_details' => 'Rādīt detaļas',
+    'changes' => 'Izmaiņas',
+    
+    // Action types
+    'type_login' => 'Pieteikšanās',
+    'type_logout' => 'Izrakstīšanās',
+    'type_order_placed' => 'Pasūtījums veikts',
+    'type_order_status_changed' => 'Pasūtījuma statuss mainīts',
+    'type_cart_add' => 'Prece pievienota grozam',
+    'type_cart_remove' => 'Prece noņemta no groza',
+    'type_wishlist_add' => 'Prece pievienota vēlmju sarakstam',
+    'type_wishlist_remove' => 'Prece noņemta no vēlmju saraksta',
+    'type_profile_update' => 'Profils atjaunināts',
+    'type_password_change' => 'Parole mainīta',
+    'type_account_created' => 'Konts izveidots',
+    'type_review_submitted' => 'Atsauksme iesniegta',
+    'type_ticket_created' => 'Atbalsta pieteikums izveidots',
+    'type_ticket_replied' => 'Atbilde uz atbalsta pieteikumu',
+    'type_refund_requested' => 'Atmaksa pieprasīta',
+    'type_child_account_created' => 'Bērna konts izveidots',
+    'type_child_account_updated' => 'Bērna konts atjaunināts',
+    'type_child_account_deleted' => 'Bērna konts dzēsts',
+    
+    // Activity messages
+    'logged_in' => 'Pieteicās sistēmā',
+    'logged_out' => 'Izrakstījās no sistēmas',
+    'placed_order' => 'Veica pasūtījumu #:order_id par :total',
+    'order_status_changed_to' => 'Pasūtījuma #:order_id statuss mainīts uz :status',
+    'added_product_to_cart' => 'Pievienoja :product grozam',
+    'removed_product_from_cart' => 'Noņēma :product no groza',
+    'added_product_to_wishlist' => 'Pievienoja :product vēlmju sarakstam',
+    'removed_product_from_wishlist' => 'Noņēma :product no vēlmju saraksta',
+    'updated_profile' => 'Atjaunināja profila informāciju',
+    'changed_password' => 'Mainīja konta paroli',
+    'registered_account' => 'Reģistrēja jaunu kontu',
+    'submitted_review' => 'Iesniedza atsauksmi precei :product',
+    'created_ticket' => 'Izveidoja atbalsta pieteikumu: :subject',
+    'replied_to_ticket' => 'Atbildēja uz atbalsta pieteikumu #:ticket_id',
+    'requested_refund' => 'Pieprasīja atmaksu pasūtījumam #:order_id',
+    'created_child_account' => 'Izveidoja bērna kontu :name',
+    'updated_child_account' => 'Atjaunināja bērna kontu :name',
+    'deleted_child_account' => 'Dzēsa bērna kontu :name',
+    
+    // Details
+    'browser' => 'Pārlūks',
+    'device' => 'Ierīce',
+    'ip_address' => 'IP adrese',
+    'location' => 'Atrašanās vieta',
+    'time' => 'Laiks',
+    'view_order' => 'Skatīt pasūtījumu',
+    'view_product' => 'Skatīt preci',
+    'view_ticket' => 'Skatīt pieteikumu',
+    
+    // Pagination
+    'showing' => 'Rāda',
+    'of' => 'no',
+    'activities' => 'darbībām',
+    'load_more' => 'Ielādēt vairāk',
+];

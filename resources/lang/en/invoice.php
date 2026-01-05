@@ -5,6 +5,7 @@ return [
     'download' => 'Download Invoice',
     'view' => 'View Invoice',
     'print' => 'Print Invoice',
+    'tagline' => 'Your Premium Shopping Destination',
     
     'order_number' => 'Order #:number',
     'invoice_number' => 'Invoice #:number',

@@ -46,6 +46,14 @@ return [
     'no_reviews' => 'Нет отзывов',
     'network_error' => 'Ошибка сети',
     'removed_from_wishlist' => 'Удалено из избранного',
+    'failed_to_add_to_cart' => 'Не удалось добавить в корзину',
+    'error_adding_to_cart' => 'Ошибка при добавлении товара в корзину',
+    'failed_to_add_to_wishlist' => 'Не удалось добавить в избранное',
+    'requested_qty_not_available' => 'Запрошенное количество (:requested) недоступно. Доступно только :available.',
+    'in_stock_count' => ':count в наличии',
+    'select_variant_first' => 'Сначала выберите вариант товара',
+    'variant_out_of_stock' => 'Выбранный вариант отсутствует в наличии',
+    'adding' => 'Добавляем...',
     
     // Product page
     'description' => 'Описание',

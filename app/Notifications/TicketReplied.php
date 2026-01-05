@@ -35,8 +35,8 @@ class TicketReplied extends Notification
             'message_id' => $this->message->id,
             'message_preview' => \Str::limit($this->message->message, 100),
             'message' => $isAdminReply
-                ? "Support replied to your ticket: \"{$this->ticket->subject}\""
-                : "New reply in ticket: \"{$this->ticket->subject}\"",
+                ? __('notifications.ticket_reply_support', ['subject' => $this->ticket->subject])
+                : __('notifications.ticket_reply_user', ['subject' => $this->ticket->subject]),
             'is_admin_reply' => $isAdminReply,
             'sender_name' => $this->message->user->name ?? 'Support',
         ];

@@ -16,6 +16,7 @@ return [
     'select_language' => 'Выберите язык',
     'english' => 'English',
     'russian' => 'Русский',
+    'latvian' => 'Latviešu',
     'save' => 'Сохранить',
     'language_updated' => 'Язык успешно изменён',
     

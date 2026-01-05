@@ -44,13 +44,13 @@ class TicketStatusChanged extends Notification implements ShouldQueue
         $statusText = ucfirst(str_replace('_', ' ', $this->newStatus));
         
         return (new MailMessage)
-            ->subject('Ticket #' . $this->ticket->id . ' Status Updated')
-            ->greeting('Hello ' . $notifiable->name . '!')
-            ->line('The status of your support ticket has been updated.')
-            ->line('**Ticket:** ' . $this->ticket->subject)
-            ->line('**New Status:** ' . $statusText)
-            ->action('View Ticket', route('tickets.show', $this->ticket))
-            ->line('Thank you for your patience!');
+            ->subject(__('notifications.ticket_status_subject', ['id' => $this->ticket->id]))
+            ->greeting(__('notifications.ticket_status_greeting', ['name' => $notifiable->name]))
+            ->line(__('notifications.ticket_status_updated'))
+            ->line('**' . __('notifications.ticket_label', ['subject' => $this->ticket->subject]) . '**')
+            ->line('**' . __('notifications.new_status', ['status' => $statusText]) . '**')
+            ->action(__('notifications.view_ticket'), route('tickets.show', $this->ticket))
+            ->line(__('notifications.thank_you_patience'));
     }
 
     /**
@@ -65,7 +65,7 @@ class TicketStatusChanged extends Notification implements ShouldQueue
             'ticket_subject' => $this->ticket->subject,
             'old_status' => $this->oldStatus,
             'new_status' => $this->newStatus,
-            'message' => 'Ticket #' . $this->ticket->id . ' status changed to ' . $this->newStatus,
+            'message' => __('notifications.ticket_status_message', ['id' => $this->ticket->id, 'status' => $this->newStatus]),
         ];
     }
 }

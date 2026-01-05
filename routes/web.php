@@ -206,7 +206,7 @@ Route::prefix('invoice')->name('invoice.')->group(function () {
 
 // Language switch route
 Route::get('/language/{locale}', function (string $locale) {
-    if (in_array($locale, ['en', 'ru'])) {
+    if (in_array($locale, ['en', 'ru', 'lv'])) {
         session(['locale' => $locale]);
     }
     return redirect()->back();

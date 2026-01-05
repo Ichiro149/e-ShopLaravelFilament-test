@@ -488,13 +488,23 @@
                 <span class="logo-text">ShopLy</span>
             </a>
             <div class="header-actions">
-                <a href="/language/{{ app()->getLocale() === 'en' ? 'ru' : 'en' }}" class="lang-switch">
+                @php
+                    $currentLocale = app()->getLocale();
+                    $locales = ['en' => 'EN', 'ru' => 'RU', 'lv' => 'LV'];
+                    $nextLocale = match($currentLocale) {
+                        'en' => 'ru',
+                        'ru' => 'lv',
+                        'lv' => 'en',
+                        default => 'en'
+                    };
+                @endphp
+                <a href="/language/{{ $nextLocale }}" class="lang-switch">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="2" y1="12" x2="22" y2="12"></line>
                         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                     </svg>
-                    {{ app()->getLocale() === 'en' ? 'RU' : 'EN' }}
+                    {{ $locales[$nextLocale] }}
                 </a>
             </div>
         </header>

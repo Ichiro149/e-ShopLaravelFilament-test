@@ -5,6 +5,7 @@ return [
     'download' => 'Скачать счёт',
     'view' => 'Посмотреть счёт',
     'print' => 'Распечатать счёт',
+    'tagline' => 'Ваш премиальный магазин',
     
     'order_number' => 'Заказ #:number',
     'invoice_number' => 'Счёт #:number',

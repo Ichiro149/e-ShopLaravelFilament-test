@@ -33,4 +33,5 @@ return [
     'select' => 'Select',
     'optional' => 'Optional',
     'required' => 'Required',
+    'failed' => 'Failed',
 ];

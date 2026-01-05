@@ -401,4 +401,24 @@
         </template>
     </div>
 </div>
+
+<script>
+// Pass translations to JS for product page
+window.productTranslations = {
+    added_to_cart: @json(__('products.added_to_cart')),
+    added_to_wishlist: @json(__('products.added_to_wishlist')),
+    removed_from_wishlist: @json(__('products.removed_from_wishlist')),
+    network_error: @json(__('products.network_error')),
+    out_of_stock: @json(__('products.out_of_stock')),
+    in_stock: @json(__('products.in_stock')),
+    in_stock_count: @json(__('products.in_stock_count')),
+    select_variant_first: @json(__('products.select_variant_first')),
+    variant_out_of_stock: @json(__('products.variant_out_of_stock')),
+    failed_to_add_to_cart: @json(__('products.failed_to_add_to_cart')),
+    error_adding_to_cart: @json(__('products.error_adding_to_cart')),
+    failed_to_add_to_wishlist: @json(__('products.failed_to_add_to_wishlist')),
+    requested_qty_not_available: @json(__('products.requested_qty_not_available')),
+    adding: @json(__('products.adding'))
+};
+</script>
 @endsection

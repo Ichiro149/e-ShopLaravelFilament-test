@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'title' => 'Mans vēlmju saraksts',
+    'your_wishlist' => 'Jūsu vēlmju saraksts',
+    'items' => 'preces',
+    'item' => 'prece',
+    'home' => 'Sākums',
+    'wishlist' => 'Vēlmju saraksts',
+    'empty' => 'Jūsu vēlmju saraksts ir tukšs',
+    'empty_description' => 'Sāciet pievienot preces, kas jums patīk, lai sekotu tām līdzi',
+    'browse_products' => 'Pārlūkot preces',
+    'remove' => 'Noņemt',
+    'add_to_cart' => 'Pievienot grozam',
+    'view_product' => 'Skatīt preci',
+    'in_stock' => 'Noliktavā',
+    'out_of_stock' => 'Nav noliktavā',
+    'uncategorized' => 'Bez kategorijas',
+    'added_to_cart' => 'Pievienots grozam',
+    'removed' => 'Noņemts no vēlmju saraksta',
+    'error_removing' => 'Neizdevās noņemt no vēlmju saraksta',
+    'error_adding_cart' => 'Neizdevās pievienot grozam',
+    'network_error' => 'Tīkla kļūda',
+    'empty_title' => 'Jūsu vēlmju saraksts ir tukšs',
+    'empty_subtitle' => 'Sāciet pievienot preces, kas jums patīk!',
+];

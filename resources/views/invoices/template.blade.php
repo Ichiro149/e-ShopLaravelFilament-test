@@ -344,10 +344,10 @@
         <div class="invoice-header">
             <div class="header-left">
                 <div class="company-name">{{ $company['name'] }}</div>
-                <div class="company-tagline">Your Premium Shopping Destination</div>
+                <div class="company-tagline">{{ __('invoice.tagline') }}</div>
             </div>
             <div class="header-right">
-                <div class="invoice-title">INVOICE</div>
+                <div class="invoice-title">{{ strtoupper(__('invoice.title')) }}</div>
                 <div class="invoice-number">#{{ $order->order_number }}</div>
             </div>
         </div>
@@ -355,7 +355,7 @@
         <!-- Info Section -->
         <div class="info-section">
             <div class="info-block">
-                <div class="info-label">Bill To</div>
+                <div class="info-label">{{ __('invoice.bill_to') }}</div>
                 <div class="info-value">
                     <strong>{{ $order->customer_name }}</strong><br>
                     {{ $order->customer_email }}<br>
@@ -366,7 +366,7 @@
             </div>
             
             <div class="info-block">
-                <div class="info-label">From</div>
+                <div class="info-label">{{ __('invoice.from') }}</div>
                 <div class="info-value">
                     <strong>{{ $company['name'] }}</strong><br>
                     {{ $company['address'] }}<br>
@@ -376,14 +376,14 @@
             </div>
             
             <div class="info-block">
-                <div class="info-label">Invoice Details</div>
+                <div class="info-label">{{ __('invoice.details') }}</div>
                 <div class="info-value">
-                    <strong>Date:</strong> {{ $order->created_at->format('M d, Y') }}<br>
-                    <strong>Due:</strong> {{ $order->created_at->addDays(7)->format('M d, Y') }}<br>
-                    <strong>Payment:</strong> {{ ucfirst($order->payment_method ?? 'N/A') }}
+                    <strong>{{ __('invoice.date') }}:</strong> {{ $order->created_at->format('M d, Y') }}<br>
+                    <strong>{{ __('invoice.due_date') }}:</strong> {{ $order->created_at->addDays(7)->format('M d, Y') }}<br>
+                    <strong>{{ __('invoice.payment_method') }}:</strong> {{ ucfirst($order->payment_method ?? 'N/A') }}
                 </div>
                 <span class="status-badge {{ $order->payment_status === 'paid' ? 'status-paid' : ($order->payment_status === 'pending' ? 'status-pending' : 'status-failed') }}">
-                    {{ strtoupper($order->payment_status ?? 'Pending') }}
+                    {{ strtoupper(__('invoice.status.' . ($order->payment_status ?? 'pending'))) }}
                 </span>
             </div>
         </div>
@@ -392,10 +392,10 @@
         <table class="items-table">
             <thead>
                 <tr>
-                    <th style="width: 50%;">Product</th>
-                    <th style="width: 15%;">Qty</th>
-                    <th style="width: 17%;">Unit Price</th>
-                    <th style="width: 18%;">Total</th>
+                    <th style="width: 50%;">{{ __('invoice.product') }}</th>
+                    <th style="width: 15%;">{{ __('invoice.quantity') }}</th>
+                    <th style="width: 17%;">{{ __('invoice.unit_price') }}</th>
+                    <th style="width: 18%;">{{ __('invoice.total') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -421,21 +421,21 @@
             <div class="totals-box">
                 <table class="totals-table">
                     <tr class="subtotal">
-                        <td>Subtotal</td>
+                        <td>{{ __('invoice.subtotal') }}</td>
                         <td>${{ number_format($order->subtotal, 2) }}</td>
                     </tr>
                     @if($order->discount_amount > 0)
                         <tr class="discount">
-                            <td>Discount @if($order->coupon_code)({{ $order->coupon_code }})@endif</td>
+                            <td>{{ __('invoice.discount') }} @if($order->coupon_code)({{ $order->coupon_code }})@endif</td>
                             <td>-${{ number_format($order->discount_amount, 2) }}</td>
                         </tr>
                     @endif
                     <tr>
-                        <td>Shipping</td>
-                        <td>Free</td>
+                        <td>{{ __('invoice.shipping') }}</td>
+                        <td>{{ __('invoice.free') }}</td>
                     </tr>
                     <tr class="total">
-                        <td>Total</td>
+                        <td>{{ __('invoice.total') }}</td>
                         <td>${{ number_format($order->total, 2) }}</td>
                     </tr>
                 </table>
@@ -445,28 +445,26 @@
         <!-- Notes -->
         @if($order->notes)
             <div class="notes-section">
-                <div class="notes-title">Order Notes</div>
+                <div class="notes-title">{{ __('invoice.notes') }}</div>
                 <div class="notes-content">{{ $order->notes }}</div>
             </div>
         @endif
 
         <div class="notes-section">
-            <div class="notes-title">Terms & Conditions</div>
+            <div class="notes-title">{{ __('invoice.terms') }}</div>
             <div class="notes-content">
-                Thank you for shopping with {{ $company['name'] }}! If you have any questions about this invoice, 
-                please contact our support team at {{ $company['email'] }}. Refund requests must be submitted 
-                within 30 days of purchase.
+                {{ __('invoice.terms_text', ['company' => $company['name'], 'email' => $company['email']]) }}
             </div>
         </div>
 
         <!-- Footer -->
         <div class="invoice-footer">
-            <div class="footer-thanks">Thank you for your business!</div>
+            <div class="footer-thanks">{{ __('invoice.thank_you') }}</div>
             <div class="footer-contact">
                 {{ $company['phone'] }} | <a href="mailto:{{ $company['email'] }}">{{ $company['email'] }}</a> | {{ $company['website'] }}
             </div>
             <div class="qr-section">
-                <div class="qr-label">Track your order at: {{ url('/track-order/' . $order->order_number) }}</div>
+                <div class="qr-label">{{ __('invoice.track_order') }}: {{ url('/track-order/' . $order->order_number) }}</div>
             </div>
         </div>
     </div>

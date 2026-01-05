@@ -956,7 +956,7 @@
                             </div>
                         </a>
                     </template>
-                    <div x-show="results.length === 0" class="sr-empty">No results</div>
+                    <div x-show="results.length === 0" class="sr-empty">{{ __('common.no_results') }}</div>
                 </div>
             </div>
 

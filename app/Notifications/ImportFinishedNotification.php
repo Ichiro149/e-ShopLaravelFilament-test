@@ -36,15 +36,15 @@ class ImportFinishedNotification extends Notification
         $url = route('filament.resources.import-jobs.index');
 
         $mail = (new MailMessage)
-            ->subject('Import finished: ' . $this->status)
-            ->greeting('Import finished')
-            ->line("Status: {$this->status}")
-            ->line("Processed: {$this->processed}")
-            ->line("Failed: {$this->failed}")
-            ->action('View imports', $url);
+            ->subject(__('notifications.import_subject', ['status' => $this->status]))
+            ->greeting(__('notifications.import_greeting'))
+            ->line(__('notifications.import_status', ['status' => $this->status]))
+            ->line(__('notifications.import_processed', ['count' => $this->processed]))
+            ->line(__('notifications.import_failed', ['count' => $this->failed]))
+            ->action(__('notifications.view_imports'), $url);
 
         if ($this->failedPath) {
-            $mail->line('There are failed rows. Download the failed CSV from the admin imports page.');
+            $mail->line(__('notifications.import_failed_notice'));
         }
 
         return $mail;

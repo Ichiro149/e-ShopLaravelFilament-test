@@ -24,12 +24,12 @@ class OrderStatusChanged extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Order Status Updated - Order #' . $this->order->order_number)
-            ->greeting('Hello ' . $this->order->customer_name . '!')
-            ->line('Your order status has been updated.')
-            ->line('Order Number: ' . $this->order->order_number)
-            ->line('New Status: ' . $this->order->orderStatus->name)
-            ->action('Track Your Order', route('orders.track', $this->order->order_number))
-            ->line('Thank you for your order!');
+            ->subject(__('notifications.order_status_subject', ['order_number' => $this->order->order_number]))
+            ->greeting(__('notifications.order_status_greeting', ['name' => $this->order->customer_name]))
+            ->line(__('notifications.order_status_updated'))
+            ->line(__('notifications.order_number_label', ['order_number' => $this->order->order_number]))
+            ->line(__('notifications.new_status_label', ['status' => $this->order->orderStatus->name]))
+            ->action(__('notifications.track_order_action'), route('orders.track', $this->order->order_number))
+            ->line(__('notifications.thank_you_order'));
     }
 }

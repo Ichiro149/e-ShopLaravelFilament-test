@@ -511,5 +511,16 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 });
+
+// Pass translations to JS for product index page
+window.productTranslations = {
+    added_to_cart: @json(__('products.added_to_cart')),
+    added_to_wishlist: @json(__('products.added_to_wishlist')),
+    removed_from_wishlist: @json(__('products.removed_from_wishlist')),
+    network_error: @json(__('products.network_error')),
+    failed_to_add_to_cart: @json(__('products.failed_to_add_to_cart')),
+    error_adding_to_cart: @json(__('products.error_adding_to_cart')),
+    failed: @json(__('common.failed') ?? 'Failed')
+};
 </script>
 @endsection

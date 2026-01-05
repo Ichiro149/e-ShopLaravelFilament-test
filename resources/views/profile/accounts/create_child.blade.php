@@ -514,6 +514,7 @@
     <div class="lang-switch">
         <a href="{{ route('language.switch', 'en') }}" class="lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
         <a href="{{ route('language.switch', 'ru') }}" class="lang-btn {{ app()->getLocale() === 'ru' ? 'active' : '' }}">RU</a>
+        <a href="{{ route('language.switch', 'lv') }}" class="lang-btn {{ app()->getLocale() === 'lv' ? 'active' : '' }}">LV</a>
     </div>
 
     <!-- Theme Toggle -->

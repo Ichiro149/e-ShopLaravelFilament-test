@@ -108,6 +108,9 @@
                                     <option value="ru" {{ auth()->user()->locale === 'ru' ? 'selected' : '' }}>
                                         🇷🇺 {{ __('settings.russian') }}
                                     </option>
+                                    <option value="lv" {{ auth()->user()->locale === 'lv' ? 'selected' : '' }}>
+                                        🇱🇻 {{ __('settings.latvian') }}
+                                    </option>
                                 </select>
                                 
                                 <button type="submit" class="settings-btn">

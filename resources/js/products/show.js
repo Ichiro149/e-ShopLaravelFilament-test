@@ -104,6 +104,7 @@ function registerProductPageComponent() {
             // update variant info area (nice badges)
             if (infoEl) {
                 const badges = [];
+                const t = window.productTranslations || {};
                 if (vSku) badges.push(`<span class="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 rounded">SKU: ${vSku}</span>`);
                 if (vAttrs) {
                     // split attributes by comma and render chips
@@ -111,7 +112,9 @@ function registerProductPageComponent() {
                     parts.forEach(p => badges.push(`<span class="inline-block px-2 py-0.5 text-xs text-gray-600 bg-white border rounded">${p}</span>`));
                 }
                 if (vStock !== null && vStock !== undefined) {
-                    const stockBadge = Number(vStock) > 0 ? `<span class="inline-block px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-800 rounded">${vStock} in stock</span>` : `<span class="inline-block px-2 py-0.5 text-xs font-semibold bg-red-100 text-red-800 rounded">Out of stock</span>`;
+                    const inStockText = (t.in_stock_count || ':count in stock').replace(':count', vStock);
+                    const outOfStockText = t.out_of_stock || 'Out of stock';
+                    const stockBadge = Number(vStock) > 0 ? `<span class="inline-block px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-800 rounded">${inStockText}</span>` : `<span class="inline-block px-2 py-0.5 text-xs font-semibold bg-red-100 text-red-800 rounded">${outOfStockText}</span>`;
                     badges.push(stockBadge);
                 }
                 infoEl.innerHTML = badges.join(' ');
@@ -188,11 +191,14 @@ function registerProductPageComponent() {
 
         async addToCart(productId = null) {
             if (!productId) productId = this.productId;
+            const t = window.productTranslations || {};
             // prevent adding if requested quantity exceeds stock
             if (this.maxQuantity !== undefined && Number(this.quantity) > Number(this.maxQuantity)) {
                 const req = Number(this.quantity);
                 const avail = Number(this.maxQuantity);
-                this.showNotification(`Requested quantity (${req}) not available. Only ${avail} in stock.`, 'error');
+                const msg = (t.requested_qty_not_available || 'Requested quantity (:requested) not available. Only :available in stock.')
+                    .replace(':requested', req).replace(':available', avail);
+                this.showNotification(msg, 'error');
                 return;
             }
 
@@ -217,7 +223,7 @@ function registerProductPageComponent() {
 
                 if (!response.ok && !data.success) {
                     console.error('Add to cart failed', response.status, data);
-                    this.showNotification(data.message || `Failed to add to cart (HTTP ${response.status})`, 'error');
+                    this.showNotification(data.message || (t.failed_to_add_to_cart || 'Failed to add to cart'), 'error');
                     return;
                 }
 
@@ -232,21 +238,22 @@ function registerProductPageComponent() {
                         }
                     }
                     const what = variantLabel ? ` (${variantLabel})` : '';
-                    this.showNotification((data.message || 'Product added to cart successfully!') + what, 'success');
+                    this.showNotification((data.message || (t.added_to_cart || 'Product added to cart successfully!')) + what, 'success');
                     // Update cart counter by actual quantity added
                     try { if (Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('cart', this.quantity); } catch(e){}
                 } else {
-                    this.showNotification(data.message || 'Error adding product to cart', 'error');
+                    this.showNotification(data.message || (t.error_adding_to_cart || 'Error adding product to cart'), 'error');
                 }
             } catch (error) {
                 console.error('Error adding to cart:', error);
-                this.showNotification('Error adding product to cart', 'error');
+                this.showNotification(t.error_adding_to_cart || 'Error adding product to cart', 'error');
             } finally {
                 this.loading = false;
             }
         },
         async addToWishlist(productId = null) {
                 if (!productId) productId = this.productId;
+                const t = window.productTranslations || {};
                 this.loading = true;
                 try {
                     const response = await fetch(`/wishlist/add/${productId}`, {
@@ -268,15 +275,15 @@ function registerProductPageComponent() {
 
                     if (data && data.success) {
                         const what = variantLabel ? ` (${variantLabel})` : '';
-                        this.showNotification((data.message || 'Added to wishlist') + what, 'success');
+                        this.showNotification((data.message || (t.added_to_wishlist || 'Added to wishlist')) + what, 'success');
                         // Update wishlist counter
                         try { if (Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('wishlist', 1); } catch(e){}
                     } else {
-                        this.showNotification(data.message || 'Failed to add to wishlist', 'error');
+                        this.showNotification(data.message || (t.failed_to_add_to_wishlist || 'Failed to add to wishlist'), 'error');
                     }
                 } catch (err) {
                     console.error('addToWishlist error', err);
-                    this.showNotification('Network error', 'error');
+                    this.showNotification(t.network_error || 'Network error', 'error');
                 } finally {
                     this.loading = false;
                 }
@@ -374,17 +381,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const qty = Number(qtyEl ? qtyEl.value : 1) || 1;
             const maxAttr = btn.getAttribute('data-max');
             const maxAvail = (maxAttr !== null) ? Number(maxAttr) : Infinity;
+            const t = window.productTranslations || {};
 
             // check stock before sending
                 if (Number(qty) > Number(maxAvail)) {
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: `Requested quantity (${qty}) not available. Only ${maxAvail} in stock.`, type: 'error' } }));
+                    const msg = (t.requested_qty_not_available || 'Requested quantity (:requested) not available. Only :available in stock.')
+                        .replace(':requested', qty).replace(':available', maxAvail);
+                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: msg, type: 'error' } }));
                 return;
             }
 
             // simple UI feedback
             btn.disabled = true;
             const originalText = btn.innerHTML;
-            btn.textContent = 'Adding...';
+            btn.textContent = t.adding || 'Adding...';
 
             try {
                 // include variant_id if present in select
@@ -403,15 +413,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data && data.success) {
-                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: data.message || 'Added to cart', type: 'success' } }));
+                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: data.message || (t.added_to_cart || 'Added to cart'), type: 'success' } }));
                     // update global Alpine store if present
                     try { if (window.Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('cart', qty); } catch(e){}
                 } else {
-                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data && data.message) || 'Failed to add to cart', type: 'error' } }));
+                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data && data.message) || (t.failed_to_add_to_cart || 'Failed to add to cart'), type: 'error' } }));
                 }
             } catch (err) {
                 console.error('Fallback addToCart error', err);
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: 'Network error', type: 'error' } }));
+                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: t.network_error || 'Network error', type: 'error' } }));
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
@@ -432,10 +442,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // include variant_id if present in select
             const variantSelect = document.getElementById('product-variant');
             const variantId = variantSelect ? variantSelect.value || null : null;
+            const t = window.productTranslations || {};
 
             btn.disabled = true;
             const originalText = btn.innerHTML;
-            btn.textContent = 'Adding...';
+            btn.textContent = t.adding || 'Adding...';
 
             try {
                 const response = await fetch(`/wishlist/add/${productId}`, {
@@ -459,15 +470,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (data && data.success) {
                     const what = variantLabel ? ` (${variantLabel})` : '';
-                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data.message || 'Added to wishlist') + what, type: 'success' } }));
+                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data.message || (t.added_to_wishlist || 'Added to wishlist')) + what, type: 'success' } }));
                     // update global Alpine store if present
                     try { if (window.Alpine && Alpine.store && Alpine.store('global')) Alpine.store('global').increment('wishlist', 1); } catch(e){}
                 } else {
-                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data && data.message) || 'Failed to add to wishlist', type: 'error' } }));
+                        window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: (data && data.message) || (t.failed_to_add_to_wishlist || 'Failed to add to wishlist'), type: 'error' } }));
                 }
             } catch (err) {
                 console.error('Fallback addToWishlist error', err);
-                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: 'Network error', type: 'error' } }));
+                    window.dispatchEvent(new CustomEvent('app:toast', { detail: { message: t.network_error || 'Network error', type: 'error' } }));
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalText;

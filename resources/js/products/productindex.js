@@ -41,6 +41,7 @@ document.addEventListener('alpine:init', () => {
         async toggleWishlist(productId, productName = 'Product') {
             const id = Number(productId);
             const already = this.isInWishlist(id);
+            const t = window.productTranslations || {};
             if (!already) this.wishlistItems.push(id);
             else this.wishlistItems = this.wishlistItems.filter(x => x !== id);
 
@@ -54,16 +55,16 @@ document.addEventListener('alpine:init', () => {
                 const json = await resp.json();
                 if (json.success) {
                     this.wishlistCount = json.wishlistCount ?? this.wishlistItems.length;
-                    this.showNotification(already ? 'removed from wishlist' : 'added to wishlist', 'success', productName);
+                    this.showNotification(already ? (t.removed_from_wishlist || 'Removed from wishlist') : (t.added_to_wishlist || 'Added to wishlist'), 'success', productName);
                 } else {
                     if (!already) this.wishlistItems = this.wishlistItems.filter(x => x !== id);
                     else this.wishlistItems.push(id);
-                    this.showNotification(json.message || 'Failed', 'error', productName);
+                    this.showNotification(json.message || (t.failed || 'Failed'), 'error', productName);
                 }
             } catch (err) {
                 if (!already) this.wishlistItems = this.wishlistItems.filter(x => x !== id);
                 else this.wishlistItems.push(id);
-                this.showNotification('Network error', 'error', productName);
+                this.showNotification(t.network_error || 'Network error', 'error', productName);
             }
         },
 
@@ -84,6 +85,7 @@ document.addEventListener('alpine:init', () => {
 
         async addToCart(productId, productName = 'Product') {
             this.loading = true;
+            const t = window.productTranslations || {};
             try {
                 const response = await fetch(`/cart/add/${productId}`, {
                     method: 'POST',
@@ -94,12 +96,12 @@ document.addEventListener('alpine:init', () => {
                 const data = await response.json();
                 if (data.success) {
                     this.cartCount = data.cartCount;
-                    this.showNotification('added to cart', 'success', productName);
+                    this.showNotification(t.added_to_cart || 'Added to cart', 'success', productName);
                 } else {
-                    this.showNotification(data.message || 'Failed', 'error', productName);
+                    this.showNotification(data.message || (t.failed || 'Failed'), 'error', productName);
                 }
             } catch (error) {
-                this.showNotification('Error adding to cart', 'error', productName);
+                this.showNotification(t.error_adding_to_cart || 'Error adding to cart', 'error', productName);
             } finally {
                 this.loading = false;
             }

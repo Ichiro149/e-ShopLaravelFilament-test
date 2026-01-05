@@ -27,7 +27,7 @@ class NewTicketCreated extends Notification
         return [
             'ticket_id' => $this->ticket->id,
             'ticket_subject' => $this->ticket->subject,
-            'message' => "New support ticket: \"{$this->ticket->subject}\"",
+            'message' => __('notifications.ticket_created_message', ['subject' => $this->ticket->subject]),
             'priority' => $this->ticket->priority,
             'user_name' => $this->ticket->user->name ?? 'User',
         ];
