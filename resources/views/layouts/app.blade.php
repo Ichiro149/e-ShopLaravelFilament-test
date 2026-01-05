@@ -986,9 +986,8 @@
                     <!-- Notifications -->
                     <div class="relative" x-data="notificationDropdown()" @click.away="open = false">
                         <div class="nav-item-wrap" @click="toggle()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor">
+                                <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
                             </svg>
                             <span x-show="$store.global.notificationsCount > 0" class="badge-counter" x-text="$store.global.notificationsCount" x-cloak></span>
                         </div>
@@ -1000,32 +999,38 @@
                             </div>
                             
                             <div class="notification-dropdown-list">
-                                <div x-show="loading" class="notification-dropdown-loading">{{ __('nav.loading') }}</div>
+                                <div x-show="loading" class="notification-dropdown-loading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
+                                        <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                                    </svg>
+                                    <div style="margin-top: 8px;">{{ __('nav.loading') }}</div>
+                                </div>
                                 
                                 <template x-if="!loading && notifications.length === 0">
                                     <div class="notification-dropdown-empty">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 12px; opacity: 0.4;">
-                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="56" height="56" fill="currentColor" style="margin: 0 auto 12px; opacity: 0.5; color: #f59e0b;">
+                                            <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
                                         </svg>
-                                        <div>{{ __('nav.no_notifications') }}</div>
+                                        <div style="font-weight: 500; margin-bottom: 4px;">{{ __('nav.no_notifications') }}</div>
+                                        <div style="font-size: 0.8125rem; opacity: 0.7;">{{ __('nav.no_notifications_desc') }}</div>
                                     </div>
                                 </template>
                                 
                                 <template x-for="notification in notifications" :key="notification.id">
                                     <a :href="getNotificationUrl(notification)" @click="markAsRead(notification.id)" class="notification-item">
                                         <div x-show="getNotificationIcon(notification) === 'ticket'" class="notification-icon ticket">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
                                             </svg>
                                         </div>
                                         <div x-show="getNotificationIcon(notification) === 'order'" class="notification-icon order">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
                                             </svg>
                                         </div>
                                         <div x-show="getNotificationIcon(notification) === 'default'" class="notification-icon default">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+                                                <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Z"/>
                                             </svg>
                                         </div>
                                         
@@ -1035,6 +1040,10 @@
                                         </div>
                                     </a>
                                 </template>
+                            </div>
+                            
+                            <div class="notification-dropdown-footer">
+                                <a href="{{ route('notifications.index') }}">{{ __('nav.view_all_notifications') }}</a>
                             </div>
                         </div>
                     </div>

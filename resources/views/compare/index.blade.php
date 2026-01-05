@@ -8,38 +8,6 @@
 
 @section('content')
 <div x-data="comparePage()" class="compare-page">
-    <!-- Toast Container -->
-    <div class="toast-container">
-        <template x-for="notification in notifications" :key="notification.id">
-            <div x-show="notification.show" 
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 translate-x-full"
-                 x-transition:enter-end="opacity-100 translate-x-0"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0 translate-x-full"
-                 :class="[notification.type]"
-                 class="toast-notification">
-                <div class="toast-icon">
-                    <svg x-show="notification.type === 'success'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <svg x-show="notification.type === 'error'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </div>
-                <div class="toast-content">
-                    <div class="toast-message" x-text="notification.message"></div>
-                </div>
-                <button @click="removeNotification(notification.id)" class="toast-close">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-        </template>
-    </div>
-
     <div class="container">
         <!-- Breadcrumbs -->
         <nav class="breadcrumbs">
@@ -268,25 +236,6 @@
 <script>
 function comparePage() {
     return {
-        notifications: [],
-        notificationId: 0,
-
-        showNotification(message, type = 'success') {
-            const id = ++this.notificationId;
-            this.notifications.push({ id, message, type, show: true });
-            setTimeout(() => this.removeNotification(id), 4000);
-        },
-
-        removeNotification(id) {
-            const idx = this.notifications.findIndex(n => n.id === id);
-            if (idx !== -1) {
-                this.notifications[idx].show = false;
-                setTimeout(() => {
-                    this.notifications = this.notifications.filter(n => n.id !== id);
-                }, 300);
-            }
-        },
-
         async removeProduct(productId) {
             try {
                 const response = await fetch(`/compare/remove/${productId}`, {
@@ -297,18 +246,24 @@ function comparePage() {
                     }
                 });
                 const data = await response.json();
+                
                 if (data.success) {
-                    // Remove product cell from DOM
+                    // Animate out the product cell
                     const cell = document.querySelector(`[data-product-id="${productId}"]`);
                     if (cell) {
-                        cell.closest('td').remove();
+                        const td = cell.closest('td');
+                        if (td) {
+                            td.style.transition = 'all 0.4s ease';
+                            td.style.opacity = '0';
+                            td.style.transform = 'scale(0.8)';
+                        }
                     }
-                    // Reload page to update comparison
-                    window.location.reload();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 400);
                 }
-                this.showNotification(data.message, data.success ? 'success' : 'error');
             } catch (error) {
-                this.showNotification('Error removing product', 'error');
+                console.error('Error removing product', error);
             }
         },
 
@@ -323,11 +278,12 @@ function comparePage() {
                     }
                 });
                 const data = await response.json();
+                
                 if (data.success) {
                     window.location.reload();
                 }
             } catch (error) {
-                this.showNotification('Error clearing comparison', 'error');
+                console.error('Error clearing comparison', error);
             }
         },
 
@@ -344,16 +300,13 @@ function comparePage() {
                 });
                 const data = await response.json();
                 if (data.success) {
-                    this.showNotification(`${productName} {{ __('cart.added') }}`, 'success');
                     // Update cart count in header
                     if (window.Alpine && Alpine.store('global')) {
                         Alpine.store('global').cartCount = data.cartCount;
                     }
-                } else {
-                    this.showNotification(data.message || 'Error', 'error');
                 }
             } catch (error) {
-                this.showNotification('Error adding to cart', 'error');
+                console.error('Error adding to cart', error);
             }
         }
     };

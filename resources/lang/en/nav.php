@@ -16,5 +16,7 @@ return [
     'mark_all_read' => 'Mark all read',
     'loading' => 'Loading...',
     'no_notifications' => 'No new notifications',
+    'no_notifications_desc' => 'You\'re all caught up!',
     'new_notification' => 'New notification',
+    'view_all_notifications' => 'View all notifications',
 ];

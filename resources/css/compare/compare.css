@@ -403,6 +403,14 @@
     color: var(--text-tertiary);
 }
 
+.empty-state .empty-icon svg {
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    max-height: 48px;
+    flex-shrink: 0;
+}
+
 .empty-state h2 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -436,72 +444,12 @@
     box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
 }
 
-/* Toast Notifications */
+/* Toast notifications are styled in _toasts.css */
+/* Just override positioning for compare page */
 .compare-page .toast-container {
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.compare-page .toast-notification {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    border: 1px solid var(--border-primary);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    min-width: 280px;
-    max-width: 400px;
-}
-
-.compare-page .toast-notification.success {
-    border-left: 4px solid #10b981;
-}
-
-.compare-page .toast-notification.error {
-    border-left: 4px solid #ef4444;
-}
-
-.compare-page .toast-icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-}
-
-.compare-page .toast-notification.success .toast-icon {
-    color: #10b981;
-}
-
-.compare-page .toast-notification.error .toast-icon {
-    color: #ef4444;
-}
-
-.compare-page .toast-message {
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    flex-grow: 1;
-}
-
-.compare-page .toast-close {
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    background: transparent;
-    border: none;
-    color: var(--text-tertiary);
-    cursor: pointer;
-    transition: color 0.2s;
-    flex-shrink: 0;
-}
-
-.compare-page .toast-close:hover {
-    color: var(--text-primary);
+    bottom: 24px;
+    right: 24px;
+    top: auto;
 }
 
 /* Responsive */
@@ -590,12 +538,6 @@
 
 [data-theme="light"] .btn-view:hover {
     background: #ebebeb;
-}
-
-[data-theme="light"] .toast-notification {
-    background: #ffffff;
-    border-color: #e0e0e0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] .add-product-placeholder {

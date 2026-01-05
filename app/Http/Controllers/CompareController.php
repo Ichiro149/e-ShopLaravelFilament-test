@@ -107,8 +107,13 @@ class CompareController extends Controller
     public function toggle(int $productId): JsonResponse
     {
         if (ProductComparison::hasProduct($productId)) {
-            return $this->remove($productId);
+            $result = ProductComparison::removeProduct($productId);
+            $result['action'] = 'removed';
+            return response()->json($result);
         }
-        return $this->add($productId);
+        
+        $result = ProductComparison::addProduct($productId);
+        $result['action'] = 'added';
+        return response()->json($result);
     }
 }

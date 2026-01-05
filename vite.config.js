@@ -18,6 +18,7 @@ export default defineConfig({
                 'resources/css/analytics/analytics.css',
                 'resources/css/activity-log/acivity-log.css',
                 'resources/css/compare/compare.css',
+                'resources/css/notifications/notifications.css',
                 'resources/css/products/productindex.css',
                 'resources/js/products/productindex.js',
             ],

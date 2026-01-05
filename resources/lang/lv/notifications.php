@@ -39,8 +39,35 @@ return [
     'title' => 'Paziņojumi',
     'no_notifications' => 'Nav paziņojumu',
     'empty_message' => 'Jūs esat informēts! Atgriezieties vēlāk, lai apskatītu jaunus paziņojumus.',
+    'empty_subtitle' => 'Nav jaunu atjauninājumu',
+    'showing_count' => ':count paziņojumi',
     'mark_read' => 'Atzīmēt kā izlasītu',
     'mark_all_read' => 'Atzīmēt visus kā izlasītus',
     'delete' => 'Dzēst',
     'delete_all' => 'Dzēst visus',
+    'view_order' => 'Skatīt pasūtījumu',
+    'browse_products' => 'Pārlūkot produktus',
+    'no_message' => 'Ziņojums nav pieejams',
+    
+    // Filters
+    'filter_all' => 'Visi',
+    'filter_tickets' => 'Pieteikumi',
+    'filter_orders' => 'Pasūtījumi',
+    
+    // Types
+    'type_notification' => 'Paziņojums',
+    'type_ticket' => 'Pieteikums',
+    'type_order' => 'Pasūtījums',
+    'type_import' => 'Imports',
+    'type_refund' => 'Atmaksa',
+    
+    // Confirmations
+    'confirm_delete' => 'Vai tiešām vēlaties dzēst šo paziņojumu?',
+    'confirm_delete_all' => 'Vai tiešām vēlaties dzēst visus paziņojumus? Šo darbību nevar atsaukt.',
+    
+    // Errors
+    'error_mark_read' => 'Neizdevās atzīmēt paziņojumu kā izlasītu',
+    'error_delete' => 'Neizdevās dzēst paziņojumu',
+    'error_mark_all' => 'Neizdevās atzīmēt visus kā izlasītus',
+    'error_delete_all' => 'Neizdevās dzēst visus paziņojumus',
 ];

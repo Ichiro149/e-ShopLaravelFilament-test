@@ -16,5 +16,7 @@ return [
     'mark_all_read' => 'Прочитать все',
     'loading' => 'Загрузка...',
     'no_notifications' => 'Нет новых уведомлений',
+    'no_notifications_desc' => 'Вы в курсе всего!',
     'new_notification' => 'Новое уведомление',
+    'view_all_notifications' => 'Посмотреть все уведомления',
 ];

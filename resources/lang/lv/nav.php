@@ -37,5 +37,7 @@ return [
     'mark_all_read' => 'Atzīmēt visus kā lasītus',
     'loading' => 'Ielādē...',
     'no_notifications' => 'Nav jaunu paziņojumu',
+    'no_notifications_desc' => 'Jūs esat informēts!',
     'new_notification' => 'Jauns paziņojums',
+    'view_all_notifications' => 'Skatīt visus paziņojumus',
 ];
