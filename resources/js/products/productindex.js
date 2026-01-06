@@ -77,9 +77,9 @@ document.addEventListener('alpine:init', () => {
 
         removeNotification(id) {
             const idx = this.notifications.findIndex(n => n.id === id);
-            if (idx !== -1) {
+            if (idx !== -1 && this.notifications[idx].show) {
                 this.notifications[idx].show = false;
-                setTimeout(() => { this.notifications = this.notifications.filter(n => n.id !== id); }, 500);
+                setTimeout(() => { this.notifications = this.notifications.filter(n => n.id !== id); }, 350);
             }
         },
 
@@ -284,11 +284,11 @@ function shopFactory() {
 
         removeNotification(id) {
             const index = this.notifications.findIndex(n => n.id === id);
-            if (index !== -1) {
+            if (index !== -1 && this.notifications[index].show) {
                 this.notifications[index].show = false;
                 setTimeout(() => {
                     this.notifications = this.notifications.filter(n => n.id !== id);
-                }, 500);
+                }, 350);
             }
         },
 

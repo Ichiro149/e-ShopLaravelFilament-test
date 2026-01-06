@@ -15,10 +15,14 @@
     <!-- Toast Container -->
     <div class="toast-container">
         <template x-for="notification in notifications" :key="notification.id">
-            <div x-show="notification.show" 
+            <div x-show="notification.show"
                  x-transition:enter="toast-enter"
+                 x-transition:enter-start="toast-enter-start"
+                 x-transition:enter-end="toast-enter-end"
                  x-transition:leave="toast-leave"
-                 :class="[notification.type, { 'hiding': notification.hiding }]"
+                 x-transition:leave-start="toast-leave-start"
+                 x-transition:leave-end="toast-leave-end"
+                 :class="notification.type"
                  class="toast-notification">
                 <div class="toast-icon">
                     <svg x-show="notification.type === 'success'" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
@@ -43,7 +47,7 @@
                         <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
                     </svg>
                 </button>
-                <div class="toast-progress" :style="notification.hiding ? 'animation: none;' : ''"></div>
+                <div class="toast-progress"></div>
             </div>
         </template>
     </div>

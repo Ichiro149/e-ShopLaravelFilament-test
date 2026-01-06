@@ -565,53 +565,7 @@
 
 .related-link:hover { opacity: 0.8; }
 
-/* Toast Container */
-.toast-container {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.toast {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    animation: toastIn 0.3s ease;
-}
-
-.toast.success { border-color: rgba(34,197,94,0.3); }
-.toast.error { border-color: rgba(239,68,68,0.3); }
-
-.toast-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.toast.success .toast-icon { background: rgba(34,197,94,0.15); color: var(--success); }
-.toast.error .toast-icon { background: rgba(239,68,68,0.15); color: var(--danger); }
-.toast-icon svg { width: 14px; height: 14px; }
-
-.toast-content { flex: 1; }
-.toast-title { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
-.toast-message { font-size: 0.8125rem; color: var(--text-muted); }
-
-@keyframes toastIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
+/* Toast styles are now in unified _toasts.css */
 
 /* ============================================
    LIGHT THEME OVERRIDES
@@ -676,12 +630,6 @@ html.theme-light .stock-badge.in-stock {
 html.theme-light .stock-badge.out-of-stock {
     background: rgba(239,68,68,0.1);
     border-color: rgba(239,68,68,0.25);
-}
-
-html.theme-light .toast {
-    background: #ffffff;
-    border-color: #e5e7eb;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
 }
 
 html.theme-light .review-avatar {

@@ -347,9 +347,9 @@
             
             container.appendChild(toast);
             
-            // Animate in
+            // Animate in using CSS animation class
             requestAnimationFrame(() => {
-                toast.classList.add('toast-enter');
+                toast.classList.add('toast-animate-in');
             });
             
             // Close button
@@ -360,9 +360,9 @@
         }
         
         function removeToast(toast) {
-            toast.classList.remove('toast-enter');
-            toast.classList.add('toast-leave');
-            setTimeout(() => toast.remove(), 500);
+            toast.classList.remove('toast-animate-in');
+            toast.classList.add('toast-animate-out');
+            setTimeout(() => toast.remove(), 350);
         }
 
         // ==========================================

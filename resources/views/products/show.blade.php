@@ -44,7 +44,11 @@
         <template x-for="(notification, index) in notifications.slice().reverse()" :key="notification.id">
             <div x-show="notification.show"
                  x-transition:enter="toast-enter"
+                 x-transition:enter-start="toast-enter-start"
+                 x-transition:enter-end="toast-enter-end"
                  x-transition:leave="toast-leave"
+                 x-transition:leave-start="toast-leave-start"
+                 x-transition:leave-end="toast-leave-end"
                  :class="{
                      'success': notification.type === 'success',
                      'error': notification.type === 'error',
@@ -393,42 +397,6 @@
                 </div>
             </div>
         @endif
-    </div>
-
-    <!-- Toast Notifications (Alpine) -->
-    <div class="toast-container">
-        <template x-for="(notification, index) in notifications.slice().reverse()" :key="notification.id">
-            <div x-show="notification.show"
-                 x-transition:enter="toast-enter"
-                 x-transition:leave="toast-leave"
-                 :class="{
-                     'success': notification.type === 'success',
-                     'error': notification.type === 'error'
-                 }"
-                 class="toast-notification">
-                <div class="toast-icon">
-                    <svg x-show="notification.type === 'success'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <svg x-show="notification.type === 'error'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                    <svg x-show="notification.type === 'info'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <div class="toast-content">
-                    <div class="toast-product-name" x-text="notification.productName"></div>
-                    <div class="toast-message" x-text="notification.message"></div>
-                </div>
-                <button @click="removeNotification(notification.id)" class="toast-close">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-                <div class="toast-progress"></div>
-            </div>
-        </template>
     </div>
 </div>
 @endsection

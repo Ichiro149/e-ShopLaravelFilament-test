@@ -15,9 +15,13 @@
     <!-- Toast Notifications Container -->
     <div class="toast-container">
         <template x-for="(notification, index) in notifications.slice().reverse()" :key="notification.id">
-            <div x-show="notification.show" 
+            <div x-show="notification.show"
                  x-transition:enter="toast-enter"
+                 x-transition:enter-start="toast-enter-start"
+                 x-transition:enter-end="toast-enter-end"
                  x-transition:leave="toast-leave"
+                 x-transition:leave-start="toast-leave-start"
+                 x-transition:leave-end="toast-leave-end"
                  :class="{
                      'success': notification.type === 'success',
                      'error': notification.type === 'error',
