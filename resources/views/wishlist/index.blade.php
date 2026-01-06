@@ -6,10 +6,6 @@
     @vite('resources/css/wishlist/wishlistindex.css')
 @endpush
 
-@push('scripts')
-    @vite('resources/js/wishlist/wishlistindex.js')
-@endpush
-
 @section('content')
 <div x-data="wishlistPage()" class="wishlist-page">
     <!-- Toast Container -->
