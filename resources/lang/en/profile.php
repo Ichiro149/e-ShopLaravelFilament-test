@@ -16,6 +16,10 @@ return [
     'open_admin' => 'Open Admin Panel',
     'admin' => 'Admin',
 
+    // Seller
+    'seller_panel' => 'Seller Panel',
+    'open_seller' => 'Open Seller Panel',
+
     // Theme
     'theme' => 'Theme',
     'toggle_theme' => 'Toggle theme',

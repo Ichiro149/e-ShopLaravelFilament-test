@@ -543,9 +543,24 @@
         }
 
         .sr-meta { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-        .sr-name { font-weight: 600; font-size: 0.9375rem; color: #e5e7eb; }
+        .sr-name { font-weight: 600; font-size: 0.9375rem; color: #e5e7eb; display: flex; align-items: center; gap: 4px; }
         .sr-price { color: var(--accent); font-size: 0.875rem; font-weight: 600; }
         .sr-empty { padding: 16px; color: #9ca3af; text-align: center; }
+
+        /* Company search results */
+        .sr-company, .sr-product { display: flex; gap: 0.75rem; align-items: center; width: 100%; }
+        .sr-company-logo { 
+            width: 48px; height: 48px; border-radius: 50%; overflow: hidden; 
+            background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .sr-company-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .sr-company-placeholder { font-size: 0.875rem; font-weight: 700; color: var(--accent); }
+        .sr-company-info { font-size: 0.8rem; color: #9ca3af; }
+        .sr-verified { width: 16px; height: 16px; color: var(--accent); }
+        .sr-type-badge { 
+            font-size: 0.6875rem; padding: 2px 8px; border-radius: 4px; 
+            background: rgba(245,158,11,0.15); color: var(--accent); font-weight: 600; text-transform: uppercase;
+        }
 
         .notification-dropdown {
             position: absolute;
@@ -966,13 +981,35 @@
                 <input class="search-input" placeholder="{{ __('nav.search_placeholder') }}" x-model="query" @input="debounceSearch" @keydown.arrow-down.prevent="next()" @keydown.arrow-up.prevent="prev()" @keydown.enter.prevent="select()">
 
                 <div x-show="showResults" x-cloak class="search-results" x-transition>
-                    <template x-for="(item, idx) in results" :key="item.id">
+                    <template x-for="(item, idx) in results" :key="item.type + '-' + item.id">
                         <a :href="item.url" class="search-result-item" :class="{'active': idx === selectedIndex}">
-                            <img x-show="item.image" :src="item.image" alt="" class="sr-thumb">
-                            <div class="sr-meta">
-                                <div class="sr-name" x-text="item.name"></div>
-                                <div class="sr-price" x-text="item.price ? ('$' + item.price) : ''"></div>
-                            </div>
+                            <template x-if="item.type === 'company'">
+                                <div class="sr-company">
+                                    <div class="sr-company-logo" x-show="item.image">
+                                        <img :src="item.image" alt="">
+                                    </div>
+                                    <div class="sr-company-logo sr-company-placeholder" x-show="!item.image" x-text="item.name.substring(0, 2).toUpperCase()"></div>
+                                    <div class="sr-meta">
+                                        <div class="sr-name">
+                                            <span x-text="item.name"></span>
+                                            <svg x-show="item.is_verified" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="sr-verified">
+                                                <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div class="sr-company-info" x-text="item.products_count + ' {{ __('company.products') }}'"></div>
+                                    </div>
+                                    <span class="sr-type-badge">{{ __('common.company') }}</span>
+                                </div>
+                            </template>
+                            <template x-if="item.type !== 'company'">
+                                <div class="sr-product">
+                                    <img x-show="item.image" :src="item.image" alt="" class="sr-thumb">
+                                    <div class="sr-meta">
+                                        <div class="sr-name" x-text="item.name"></div>
+                                        <div class="sr-price" x-text="item.price ? ('$' + item.price) : ''"></div>
+                                    </div>
+                                </div>
+                            </template>
                         </a>
                     </template>
                     <div x-show="results.length === 0" class="sr-empty">{{ __('common.no_results') }}</div>

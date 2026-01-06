@@ -13,7 +13,8 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', // Добавляем
+        'user_id',
+        'company_id',
         'name',
         'slug',
         'description',
@@ -99,6 +100,14 @@ class Product extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Компания-продавец
+     */
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 
     public function category(): BelongsTo

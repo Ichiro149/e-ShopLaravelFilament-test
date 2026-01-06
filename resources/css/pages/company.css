@@ -1,0 +1,569 @@
+/* =====================================================
+   Company Pages CSS
+   ===================================================== */
+
+/* Companies Index Page */
+.companies-page {
+    padding: 2rem 0 4rem;
+}
+
+.companies-page .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.companies-page .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.companies-page .page-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.companies-page .page-subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.companies-filters {
+    margin-bottom: 2rem;
+}
+
+.filters-form {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filters-form .search-input-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filters-form .form-input,
+.filters-form .form-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.filters-form .sort-wrapper {
+    width: 180px;
+}
+
+/* Companies Grid */
+.companies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.company-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.company-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.company-card__logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.company-card__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.company-card__logo-placeholder {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.company-card__info {
+    text-align: center;
+}
+
+.company-card__name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.company-verified-badge {
+    color: var(--primary);
+}
+
+.company-card__description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.company-card__stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* =====================================================
+   Company Show Page
+   ===================================================== */
+
+.company-page {
+    padding-bottom: 4rem;
+}
+
+.company-page .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.company-banner {
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    background-size: cover;
+    background-position: center;
+    border-radius: 0 0 16px 16px;
+    position: relative;
+}
+
+.company-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 16px 16px;
+}
+
+.company-header {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+}
+
+.company-header__logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--bg);
+    background: var(--bg-card);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.company-header__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.company-header__logo-placeholder {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.company-header__info {
+    flex: 1;
+    padding-top: 55px;
+}
+
+.company-header__title-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.company-header__name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.company-verified {
+    color: var(--primary);
+}
+
+.company-follow-btn {
+    padding: 0.5rem 1.5rem;
+}
+
+.company-header__stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.company-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.company-stat__value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.company-stat__label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.company-header__description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Company Details */
+.company-details {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+}
+
+.company-details__main {
+    min-width: 0;
+}
+
+.company-about {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.company-about h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.company-about__text {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.company-products h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Sidebar */
+.company-details__sidebar {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.company-contact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.company-contact-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.contact-item:last-child {
+    margin-bottom: 0;
+}
+
+.contact-item svg {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.contact-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .company-details {
+        grid-template-columns: 1fr;
+    }
+
+    .company-details__sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .company-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -60px;
+    }
+
+    .company-header__info {
+        padding-top: 0;
+    }
+
+    .company-header__title-row {
+        justify-content: center;
+    }
+
+    .company-header__stats {
+        justify-content: center;
+    }
+
+    .company-banner {
+        height: 150px;
+    }
+
+    .filters-form {
+        flex-direction: column;
+    }
+
+    .filters-form .search-input-wrapper,
+    .filters-form .sort-wrapper {
+        width: 100%;
+    }
+}
+
+/* =====================================================
+   Product Cards for Company Page
+   ===================================================== */
+
+.company-products .products-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .company-products .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .company-products .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.company-products .product-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.company-products .product-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.product-card__image {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    background: var(--bg-tertiary);
+    overflow: hidden;
+}
+
+.product-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-card__image img {
+    transform: scale(1.05);
+}
+
+.product-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.product-card__badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+.product-card__badge--sale {
+    background: var(--error);
+    color: white;
+}
+
+.product-card__body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.product-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.product-card__title a {
+    color: var(--text);
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-card__title a:hover {
+    color: var(--accent);
+}
+
+.product-card__category {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.product-card__price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.product-card__price--current {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.product-card__price--old {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+.pagination-wrapper {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}

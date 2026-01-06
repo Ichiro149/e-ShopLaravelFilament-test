@@ -7,7 +7,6 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -39,7 +38,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'avatar',
         'role',
         'is_seller',
-        'parent_user_id',
         'username',
         'locale',
     ];
@@ -201,46 +199,44 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasMany(\App\Models\Product::class);
     }
 
+    /**
+     * Компания пользователя (для продавцов)
+     */
+    public function company(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Company::class);
+    }
+
+    /**
+     * Компании, на которые подписан пользователь
+     */
+    public function followedCompanies(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Company::class, 'company_follows')
+            ->withTimestamps();
+    }
+
+    /**
+     * Проверить, подписан ли пользователь на компанию
+     */
+    public function isFollowing(Company $company): bool
+    {
+        return $this->followedCompanies()->where('company_id', $company->id)->exists();
+    }
+
+    /**
+     * Проверить, есть ли у продавца компания
+     */
+    public function hasCompany(): bool
+    {
+        return $this->company()->exists();
+    }
+
     // Note: Profile model not yet implemented
     // public function profile()
     // {
     //     return $this->hasOne(Profile::class);
     // }
-
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(self::class, 'parent_user_id');
-    }
-
-    public function children(): HasMany
-    {
-        return $this->hasMany(self::class, 'parent_user_id');
-    }
-
-    public function childrenCount(): int
-    {
-        return (int) $this->children()->count();
-    }
-
-    public function canCreateChild(): bool
-    {
-        return $this->childrenCount() < 2;
-    }
-
-    public function isMaster(): bool
-    {
-        return $this->parent_user_id === null;
-    }
-
-    public function isChildOf(User $user): bool
-    {
-        return $this->parent_user_id !== null && $this->parent_user_id === $user->id;
-    }
-
-    public function ownedBy(User $user): bool
-    {
-        return $this->id === $user->id || $this->parent_user_id === $user->id;
-    }
 
     public function tickets()
     {

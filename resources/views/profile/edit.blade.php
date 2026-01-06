@@ -9,11 +9,6 @@
 
 @push('scripts')
     @vite('resources/js/profile/profileedit.js')
-    @vite('resources/js/account/accounts.js')
-    <script>
-        window.__routes = window.__routes || {};
-        window.__routes.profileAccountsSwitch = "{{ route('profile.accounts.switch') }}";
-    </script>
 @endpush
 
 @section('content')
@@ -68,6 +63,12 @@
           <a href="/admin" target="_blank" class="action-btn action-btn--admin">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
             {{ __('profile.open_admin') }}
+          </a>
+        @endif
+        @if($user->isSeller())
+          <a href="/seller" target="_blank" class="action-btn action-btn--seller">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            {{ __('profile.open_seller') }}
           </a>
         @endif
         <form method="POST" action="{{ route('logout') }}" class="inline-form">
@@ -190,58 +191,92 @@
 
       {{-- Right Column --}}
       <div class="profile-column">
-        {{-- Account Switcher --}}
-        @php
-            $authUser = auth()->user();
-            $master = $authUser->parent_user_id 
-                ? \App\Models\User::with(['children' => fn($q) => $q->orderBy('created_at', 'asc')])->find($authUser->parent_user_id)
-                : \App\Models\User::with(['children' => fn($q) => $q->orderBy('created_at', 'asc')])->find($authUser->id);
-            $related = collect([$master])->merge($master->children ?? collect());
-        @endphp
+        {{-- Company Info (for sellers) --}}
+        @if($user->hasRole('seller'))
+          <section class="profile-section" id="company-info">
+            <div class="section-header">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <h2>{{ __('company.my_company') }}</h2>
+            </div>
 
-        <section class="profile-section" id="account-switcher">
-          <div class="section-header">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <h2>{{ __('profile.account_switcher') }}</h2>
-          </div>
-
-          <div class="accounts-list">
-            @foreach($related as $acc)
-              <button type="button"
-                class="account-card {{ $acc->id === $user->id ? 'account-card--active' : '' }}"
-                onclick="switchAccount({{ $acc->id }})"
-                @if($acc->id === $user->id) disabled @endif>
-                <img class="account-avatar"
-                  src="{{ $acc->avatar_url ?? asset('storage/logo/no_avatar.png') }}"
-                  alt="{{ $acc->name }}">
-                <div class="account-info">
-                  <span class="account-name">
-                    {{ $acc->name }}
-                    @if($acc->hasRole('admin'))
-                      <svg class="admin-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L15.5 8.5L23 9.5L17.5 15L19 23L12 19L5 23L6.5 15L1 9.5L8.5 8.5L12 1Z"/></svg>
-                    @endif
-                  </span>
-                  <span class="account-email">{{ $acc->email }}</span>
+            @if($user->hasCompany())
+              @php $company = $user->company; @endphp
+              <div class="company-card">
+                <div class="company-card__header">
+                  <img class="company-card__logo" 
+                    src="{{ $company->logo_url }}" 
+                    alt="{{ $company->name }}">
+                  <div class="company-card__info">
+                    <h3 class="company-card__name">
+                      {{ $company->name }}
+                      @if($company->is_verified)
+                        <svg class="verified-badge" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                      @endif
+                    </h3>
+                    <span class="company-card__stats">
+                      {{ $company->products()->count() }} {{ __('company.products') }} · 
+                      {{ $company->followers()->count() }} {{ __('company.followers') }}
+                    </span>
+                  </div>
                 </div>
-                @if($acc->id === $user->id)
-                  <span class="account-active-badge">Active</span>
-                @endif
-              </button>
-            @endforeach
-
-            <a href="{{ route('profile.accounts.create-child') }}" class="account-card account-card--add">
-              <div class="add-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <div class="company-card__actions">
+                  <a href="{{ $company->url }}" class="btn-secondary" target="_blank">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    {{ __('company.view_page') }}
+                  </a>
+                  <a href="{{ route('filament.seller.resources.companies.edit', $company) }}" class="btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    {{ __('company.edit') }}
+                  </a>
+                </div>
               </div>
-              <div class="account-info">
-                <span class="account-name">{{ __('profile.create_account') }}</span>
-                <span class="account-email">{{ __('profile.link_to_main') }}</span>
+            @else
+              <div class="empty-company">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <p>{{ __('company.no_company_yet') }}</p>
+                <a href="{{ route('filament.seller.resources.companies.create') }}" class="btn-primary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  {{ __('company.create_company') }}
+                </a>
               </div>
-            </a>
-          </div>
+            @endif
+          </section>
+        @endif
 
-          <p class="section-hint">{{ __('profile.switcher_hint') }}</p>
-        </section>
+        {{-- Followed Companies --}}
+        @if($user->followedCompanies()->count() > 0)
+          <section class="profile-section" id="followed-companies">
+            <div class="section-header">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <h2>{{ __('company.followed_companies') }}</h2>
+            </div>
+
+            <div class="followed-companies-list">
+              @foreach($user->followedCompanies()->take(5)->get() as $followedCompany)
+                <a href="{{ $followedCompany->url }}" class="followed-company-item">
+                  <img class="followed-company-logo" 
+                    src="{{ $followedCompany->logo_url }}" 
+                    alt="{{ $followedCompany->name }}">
+                  <div class="followed-company-info">
+                    <span class="followed-company-name">
+                      {{ $followedCompany->name }}
+                      @if($followedCompany->is_verified)
+                        <svg class="verified-badge" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                      @endif
+                    </span>
+                    <span class="followed-company-products">{{ $followedCompany->products()->count() }} {{ __('company.products') }}</span>
+                  </div>
+                </a>
+              @endforeach
+            </div>
+
+            @if($user->followedCompanies()->count() > 5)
+              <a href="{{ route('companies.index') }}" class="view-all-link">
+                {{ __('company.view_all_companies') }} →
+              </a>
+            @endif
+          </section>
+        @endif
       </div>
     </div>
   </div>

@@ -99,6 +99,8 @@
 .action-btn:hover { background: var(--surface-elevated); transform: translateY(-1px); }
 .action-btn--admin { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.3); color: var(--purple); }
 .action-btn--admin:hover { background: rgba(139,92,246,0.25); }
+.action-btn--seller { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.3); color: var(--accent); }
+.action-btn--seller:hover { background: rgba(245,158,11,0.25); }
 .action-btn--secondary { width: 44px; padding: 12px; }
 .action-btn--danger { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--danger); width: 44px; padding: 12px; }
 .action-btn--danger:hover { background: rgba(239,68,68,0.2); }
@@ -471,4 +473,214 @@ html.theme-light .two-factor-actions .btn-secondary {
 
 html.theme-light .two-factor-actions .btn-secondary:hover {
     background: #d1d5db;
+}
+
+/* ===================================
+   Company Card Section (for sellers)
+   =================================== */
+
+.company-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.company-card__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.company-card__logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.company-card__info {
+    flex: 1;
+}
+
+.company-card__name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+}
+
+.company-card__name .verified-badge {
+    color: var(--accent-color, #f59e0b);
+}
+
+.company-card__stats {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.company-card__actions {
+    display: flex;
+    gap: 12px;
+}
+
+.company-card__actions .btn-secondary,
+.company-card__actions .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.company-card__actions .btn-secondary {
+    background: var(--surface);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+.company-card__actions .btn-secondary:hover {
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+}
+
+.company-card__actions .btn-primary {
+    background: var(--accent-color, #f59e0b);
+    color: #1f2937;
+}
+
+.company-card__actions .btn-primary:hover {
+    background: var(--accent-hover, #d97706);
+}
+
+/* Empty company state */
+.empty-company {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-company svg {
+    color: var(--text-muted);
+    opacity: 0.5;
+    margin-bottom: 16px;
+}
+
+.empty-company p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.empty-company .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 10px;
+    text-decoration: none;
+    background: var(--accent-color, #f59e0b);
+    color: #1f2937;
+    transition: background-color 0.2s ease;
+}
+
+.empty-company .btn-primary:hover {
+    background: var(--accent-hover, #d97706);
+}
+
+/* ===================================
+   Followed Companies List
+   =================================== */
+
+.followed-companies-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.followed-company-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.followed-company-item:hover {
+    background: var(--surface);
+    border-color: var(--accent-color, #f59e0b);
+    transform: translateX(4px);
+}
+
+.followed-company-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--surface);
+}
+
+.followed-company-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.followed-company-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.followed-company-name .verified-badge {
+    color: var(--accent-color, #f59e0b);
+}
+
+.followed-company-products {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+.view-all-link {
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--accent-color, #f59e0b);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.view-all-link:hover {
+    color: var(--accent-hover, #d97706);
+}
+
+/* Verified badge utility */
+.verified-badge {
+    flex-shrink: 0;
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
@@ -30,6 +31,11 @@ Route::get('/recently-viewed', [PageController::class, 'recentlyViewed'])->name(
 Route::get('/privacy', [PageController::class, 'privacy'])->name('pages.privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('pages.terms');
 Route::get('/cookies', [PageController::class, 'cookies'])->name('pages.cookies');
+
+// Companies
+Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
+Route::get('/companies/{slug}', [CompanyController::class, 'show'])->name('companies.show');
+Route::post('/companies/{company}/follow', [CompanyController::class, 'toggleFollow'])->name('companies.follow')->middleware('auth');
 
 // Home
 Route::get('/', fn () => view('welcome'))->name('home');
@@ -80,9 +86,6 @@ Route::middleware('auth')->group(function () {
     Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/profile/accounts/create-child', [AccountController::class, 'createChild'])->name('profile.accounts.create-child');
-    Route::post('/profile/accounts/store-child', [AccountController::class, 'storeChild'])->name('profile.accounts.store-child');
-    Route::post('/profile/accounts/switch', [AccountController::class, 'switchAccount'])->name('profile.accounts.switch');
 });
 
 // Products

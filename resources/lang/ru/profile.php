@@ -16,6 +16,10 @@ return [
     'open_admin' => 'Открыть панель',
     'admin' => 'Админ',
 
+    // Seller
+    'seller_panel' => 'Панель продавца',
+    'open_seller' => 'Панель продавца',
+
     // Theme
     'theme' => 'Тема',
     'toggle_theme' => 'Сменить тему',

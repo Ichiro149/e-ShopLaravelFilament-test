@@ -7,6 +7,7 @@ use App\Filament\Resources\ProductResource\RelationManagers\ActivityLogsRelation
 use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManager;
 use App\Filament\Resources\ProductResource\RelationManagers\VariantsRelationManager;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -28,6 +29,16 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationLabel = 'Products (Moderation)';
+
+    /**
+     * Админы не могут создавать товары - только редактировать и модерировать
+     */
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Forms\Form $form): Forms\Form
     {
@@ -103,6 +114,14 @@ class ProductResource extends Resource
 
                 Forms\Components\Section::make('Categories & Settings')
                     ->schema([
+                        Select::make('company_id')
+                            ->label('Company')
+                            ->relationship('company', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->helperText('Select the company that owns this product'),
+
                         Select::make('category_id')
                             ->relationship('category', 'name')
                             ->preload()
@@ -199,6 +218,16 @@ class ProductResource extends Resource
                     ->sortable()
                     ->limit(30),
 
+                Tables\Columns\TextColumn::make('company.name')
+                    ->label('Company')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->url(fn (Product $record): ?string => $record->company 
+                        ? route('filament.admin.resources.companies.edit', $record->company) 
+                        : null),
+
                 Tables\Columns\TextColumn::make('sku')
                     ->label('SKU')
                     ->searchable()
@@ -242,6 +271,12 @@ class ProductResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('company')
+                    ->relationship('company', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->label('Company'),
+
                 SelectFilter::make('category')
                     ->relationship('category', 'name'),
 

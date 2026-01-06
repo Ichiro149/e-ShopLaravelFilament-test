@@ -33,12 +33,25 @@ class ProductResource extends Resource
     protected static ?string $navigationLabel = 'My Products';
 
     /**
-     * Продавец видит ТОЛЬКО свои товары
+     * Продавец видит ТОЛЬКО товары своей компании
      */
     public static function getEloquentQuery(): Builder
     {
+        $user = Auth::user();
+        $companyId = $user?->company?->id;
+
         return parent::getEloquentQuery()
-            ->where('user_id', Auth::id());
+            ->where('company_id', $companyId);
+    }
+
+    /**
+     * Можно создавать товары только если есть компания
+     */
+    public static function canCreate(): bool
+    {
+        $user = Auth::user();
+
+        return $user && $user->company !== null;
     }
 
     public static function form(Forms\Form $form): Forms\Form
@@ -171,9 +184,12 @@ class ProductResource extends Resource
                             ->defaultItems(0),
                     ]),
 
-                // Скрытое поле — автоматически привязываем к текущему продавцу
+                // Скрытые поля — автоматически привязываем к текущему продавцу и его компании
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn () => Auth::id()),
+
+                Forms\Components\Hidden::make('company_id')
+                    ->default(fn () => Auth::user()?->company?->id),
             ]);
     }
 
