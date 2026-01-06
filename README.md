@@ -142,7 +142,7 @@ Dedicated dashboard for sellers to manage their companies and products:
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/Vlad8733/LaravelFilament-test.git
 cd filament-test
 
 # Install dependencies
