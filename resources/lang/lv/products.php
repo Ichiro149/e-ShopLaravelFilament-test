@@ -62,6 +62,7 @@ return [
     'no_reviews_yet' => 'Vēl nav atsauksmju',
     'be_first_review' => 'Esi pirmais, kas novērtē šo preci pēc pirkuma!',
     'related_products' => 'Saistītās preces',
+    'recently_viewed' => 'Nesen skatītās preces',
     'view_details' => 'Skatīt detaļas',
     'category' => 'Kategorija',
     

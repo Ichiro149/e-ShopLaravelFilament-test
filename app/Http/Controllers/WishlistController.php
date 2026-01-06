@@ -16,15 +16,10 @@ class WishlistController extends Controller
             ->where('user_id', $userId)
             ->get()
             ->map(function($wi) {
-                $p = $wi->product;
-                // Ensure category is loaded
-                if ($p && !$p->relationLoaded('category')) {
-                    $p->load('category');
-                }
                 return (object)[
                     'id' => $wi->id,
-                    'product' => $p,
-                    'variant' => $wi->variant, // include variant relation for views
+                    'product' => $wi->product,
+                    'variant' => $wi->variant,
                     'variant_id' => $wi->variant_id,
                     'created_at' => $wi->created_at,
                 ];

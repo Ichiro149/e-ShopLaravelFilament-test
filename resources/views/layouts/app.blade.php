@@ -46,13 +46,11 @@
         })();
     </script>
 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('styles')
 
     @stack('head-scripts')
-
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
 
     <script>
         window.initialCartCount = {{ auth()->check() ? auth()->user()->cartItems()->sum('quantity') : 0 }};
@@ -1147,6 +1145,14 @@
                                     <span>{{ __('compare.title') }}</span>
                                 </a>
 
+                                <a href="{{ route('pages.recently-viewed') }}" class="profile-dropdown-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    <span>{{ __('nav.recently_viewed') }}</span>
+                                </a>
+
                                 <a href="{{ route('settings.index') }}" class="profile-dropdown-item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="3"></circle>
@@ -1192,6 +1198,8 @@
     </nav>
 
     @yield('content')
+
+    @include('components.footer')
     
     @stack('scripts')
 </body>

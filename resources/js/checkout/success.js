@@ -1,3 +1,3 @@
-console.log('Order success page loaded');
+// Order success page
 
 // Опционально: добавить конфетти или анимацию

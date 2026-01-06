@@ -91,7 +91,7 @@ class TicketController extends Controller
             }
 
             // Уведомляем админов о новом тикете
-            $admins = User::where('is_admin', true)->get();
+            $admins = User::where('role', User::ROLE_ADMIN)->get();
             if ($admins->count() > 0) {
                 Notification::send($admins, new NewTicketCreated($ticket));
             }

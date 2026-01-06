@@ -3,7 +3,7 @@
 @section('title', __('activity_log.title'))
 
 @push('styles')
-    @vite('resources/css/activity-log/acivity-log.css')
+    @vite('resources/css/activity-log/activity-log.css')
 @endpush
 
 @section('content')

@@ -19,6 +19,10 @@ class TicketAttachment extends Model
         'file_size',
     ];
 
+    protected $casts = [
+        'file_size' => 'integer',
+    ];
+
     /**
      * Сообщение, к которому относится вложение
      */

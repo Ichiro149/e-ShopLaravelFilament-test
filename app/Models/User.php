@@ -50,6 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_seller' => 'boolean',
         ];
     }
 
@@ -255,6 +256,11 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
     public function wishlistItems()
     {
         return $this->hasMany(\App\Models\WishlistItem::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(\App\Models\Order::class);
     }
 
     public function reviews(): HasMany

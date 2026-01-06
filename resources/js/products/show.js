@@ -211,7 +211,7 @@ function registerProductPageComponent() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify(payload)
@@ -260,7 +260,7 @@ function registerProductPageComponent() {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': window.getCsrfToken(),
                             'Accept': 'application/json'
                         },
                         body: JSON.stringify({ variant_id: this.selectedVariantId })
@@ -305,6 +305,37 @@ function registerProductPageComponent() {
             }
         },
     }));
+    
+    // Register Recently Viewed component
+    Alpine.data('rvComponent', () => {
+        const KEY = 'rvp';
+        const CURRENT_ID = window.currentProductId || 0;
+        const CURRENT_PRODUCT = window.currentProductData || null;
+        
+        return {
+            products: [],
+            
+            init() {
+                if (!CURRENT_PRODUCT) return;
+                
+                let arr = [];
+                try { 
+                    arr = JSON.parse(localStorage.getItem(KEY) || '[]'); 
+                } catch(e) { 
+                    arr = []; 
+                }
+                
+                // Show products except current one
+                this.products = arr.filter(x => x.id !== CURRENT_ID).slice(0, 4);
+                
+                // Save current product
+                arr = arr.filter(x => x.id !== CURRENT_ID);
+                arr.unshift(CURRENT_PRODUCT);
+                arr = arr.slice(0, 10);
+                localStorage.setItem(KEY, JSON.stringify(arr));
+            }
+        };
+    });
     
     productPageRegistered = true;
     return true;
@@ -405,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({ quantity: qty, variant_id: variantId })
@@ -453,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({ variant_id: variantId })

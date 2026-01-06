@@ -18,12 +18,10 @@ function checkout() {
         errors: {},
 
         init() {
-            console.log('Checkout initialized');
+            // Checkout initialized
         },
 
         openPaymentModal() {
-            console.log('Opening payment modal');
-            
             if (!this.customerName || !this.customerEmail || !this.shippingAddress) {
                 alert('Please fill in all shipping information');
                 return;
@@ -48,7 +46,6 @@ function checkout() {
 
         async submitOrder() {
             if (this.processing) {
-                console.log('Already processing, ignoring click');
                 return;
             }
 
@@ -60,35 +57,28 @@ function checkout() {
             }
 
             this.processing = true;
-            console.log('Starting order submission...');
 
             try {
                 const formData = new FormData();
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+                formData.append('_token', window.getCsrfToken());
                 formData.append('name', this.customerName);
                 formData.append('email', this.customerEmail);
                 formData.append('address', this.shippingAddress);
                 formData.append('notes', this.notes || '');
                 formData.append('payment_method', 'fake');
 
-                console.log('Sending request...');
-
                 const response = await fetch('/checkout', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        'X-CSRF-TOKEN': window.getCsrfToken()
                     },
                     body: formData
                 });
 
-                console.log('Response status:', response.status);
-
                 const data = await response.json();
-                console.log('Response data:', data);
 
                 if (data.success && data.redirect) {
-                    console.log('Order successful! Redirecting to:', data.redirect);
                     this.showPaymentModal = false;
                     window.location.href = data.redirect;
                 } else {
@@ -107,7 +97,6 @@ function checkout() {
 
 if (typeof window !== 'undefined') {
     window.checkout = checkout;
-    console.log('✅ window.checkout registered:', typeof window.checkout);
 }
 
 // ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ onclick:
@@ -158,24 +147,18 @@ window.submitOrder = async function() {
         formData.append('notes', document.getElementById('notes').value || '');
         formData.append('payment_method', 'fake');
         
-        console.log('📤 Sending order...');
-        
         const response = await fetch('/checkout', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-CSRF-TOKEN': window.getCsrfToken()
             },
             body: formData
         });
         
-        console.log('📥 Status:', response.status);
-        
         const data = await response.json();
-        console.log('✅ Data:', data);
         
         if (data.success && data.redirect) {
-            console.log('🎉 SUCCESS! Redirecting...');
             window.location.href = data.redirect;
         } else {
             alert(data.message || 'Payment failed');
@@ -192,4 +175,4 @@ window.submitOrder = async function() {
     }
 };
 
-console.log('✅ Checkout JS loaded with global functions');
+// Checkout JS loaded

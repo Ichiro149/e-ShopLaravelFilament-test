@@ -1102,3 +1102,69 @@ html.theme-light .modal-footer {
         display: none !important;
     }
 }
+
+/* ============================================
+ * BREADCRUMBS COMPONENT
+ * ============================================ */
+
+.breadcrumbs-component {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumbs-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.breadcrumbs-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbs-separator {
+    color: var(--text-dim);
+    margin: 0 0.5rem;
+}
+
+.breadcrumbs-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumbs-link:hover {
+    color: var(--accent);
+}
+
+.breadcrumbs-link svg {
+    color: var(--text-dim);
+}
+
+.breadcrumbs-link:hover svg {
+    color: var(--accent);
+}
+
+.breadcrumbs-current {
+    color: var(--text);
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    .breadcrumbs-list {
+        font-size: 0.8rem;
+    }
+    
+    .breadcrumbs-link svg {
+        width: 16px;
+        height: 16px;
+    }
+}

@@ -15,10 +15,8 @@ class CompareController extends Controller
     {
         $items = ProductComparison::getItems();
         
-        // Load products with their relationships directly from items
-        $products = $items->map(function ($item) {
-            return $item->product->load('category', 'images');
-        })->filter(); // filter out any null products
+        // Products already eager loaded with relationships in getItems()
+        $products = $items->map(fn($item) => $item->product)->filter();
 
         // Collect all unique attributes for comparison
         $attributes = [];

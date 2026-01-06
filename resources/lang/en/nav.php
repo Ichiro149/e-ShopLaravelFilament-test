@@ -8,6 +8,7 @@ return [
     'support_tickets' => 'Support Tickets',
     'my_refunds' => 'My Refunds',
     'my_reviews' => 'My Reviews',
+    'recently_viewed' => 'Recently Viewed',
     'settings' => 'Settings',
     'admin_panel' => 'Admin Panel',
     'sign_out' => 'Sign Out',

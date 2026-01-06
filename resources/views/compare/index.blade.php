@@ -103,7 +103,7 @@
                     <tr>
                         <th class="label-cell">{{ __('compare.category') }}</th>
                         @foreach($products as $product)
-                            <td class="data-cell">{{ $product->category?->name ?? ($product->category()->first()?->name ?? '—') }}</td>
+                            <td class="data-cell">{{ $product->category?->name ?? $product->category()->first()?->name ?? '—' }}</td>
                         @endforeach
                         @for($i = $products->count(); $i < 4; $i++)
                             <td class="data-cell empty-cell">—</td>

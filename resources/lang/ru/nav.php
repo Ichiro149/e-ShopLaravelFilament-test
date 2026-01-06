@@ -8,6 +8,7 @@ return [
     'support_tickets' => 'Поддержка',
     'my_refunds' => 'Мои возвраты',
     'my_reviews' => 'Мои отзывы',
+    'recently_viewed' => 'Недавно просмотренные',
     'settings' => 'Настройки',
     'admin_panel' => 'Админ панель',
     'sign_out' => 'Выйти',

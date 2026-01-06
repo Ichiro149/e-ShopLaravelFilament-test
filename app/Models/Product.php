@@ -136,6 +136,21 @@ class Product extends Model
         return $this->morphMany(\App\Models\ActivityLog::class, 'subject');
     }
 
+    public function wishlistItems(): HasMany
+    {
+        return $this->hasMany(WishlistItem::class);
+    }
+
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function comparisons(): HasMany
+    {
+        return $this->hasMany(ProductComparison::class);
+    }
+
     // =========================================================
     // SELLER HELPERS
     // =========================================================

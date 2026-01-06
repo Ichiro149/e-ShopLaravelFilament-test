@@ -1,7 +1,19 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
+import { registerAlpineComponents } from './alpine-components';
 
 window.Alpine = Alpine;
+
+// Register all Alpine components BEFORE starting Alpine
+registerAlpineComponents(Alpine);
+
+/**
+ * Safe CSRF Token Helper
+ * Returns empty string if meta tag is not found
+ */
+window.getCsrfToken = function() {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+};
 
 /**
  * Global Toast Notifications System
@@ -102,7 +114,7 @@ window.ToastNotifications = {
     }
 };
 
-// Start Alpine
+// Start Alpine - components are already registered via import
 Alpine.start();
 
 // Init notifications after Alpine is ready

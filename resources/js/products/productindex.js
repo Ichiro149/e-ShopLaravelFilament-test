@@ -50,7 +50,7 @@ document.addEventListener('alpine:init', () => {
                 const resp = await fetch(url, {
                     method: already ? 'DELETE' : 'POST',
                     credentials: 'same-origin',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': window.getCsrfToken(), 'Accept': 'application/json' }
                 });
                 const json = await resp.json();
                 if (json.success) {
@@ -90,7 +90,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await fetch(`/cart/add/${productId}`, {
                     method: 'POST',
                     credentials: 'same-origin',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': window.getCsrfToken(), 'Accept': 'application/json' },
                     body: JSON.stringify({ quantity: 1 })
                 });
                 const data = await response.json();
@@ -244,7 +244,7 @@ function shopFactory() {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     }
                 });
@@ -300,7 +300,7 @@ function shopFactory() {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({ quantity: 1 })
@@ -386,4 +386,4 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('shop', shopFactory);
 });
 
-console.log('Products JS loaded, shop registered');
+// Products JS loaded

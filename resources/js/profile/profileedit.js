@@ -80,7 +80,6 @@ function switchAccount(id) {
             location.reload();
         } else {
             alert(json.message || 'Switch failed');
-            console.log(json);
         }
     })
     .catch(err => {

@@ -7,7 +7,34 @@
 @endpush
 
 @push('head-scripts')
-    @vite('resources/js/products/show.js')
+    <script>
+    // Pass current product data for Recently Viewed (must be before Alpine starts)
+    window.currentProductId = {{ $product->id }};
+    window.currentProductData = {
+        id: {{ $product->id }},
+        name: {!! json_encode($product->name) !!},
+        price: {!! json_encode(number_format($product->getCurrentPrice(), 2)) !!},
+        image: {!! json_encode($product->getPrimaryImage() ? asset('storage/' . $product->getPrimaryImage()->image_path) : null) !!},
+        url: {!! json_encode(route('products.show', $product)) !!}
+    };
+    // Pass translations to JS for product page
+    window.productTranslations = {
+        added_to_cart: @json(__('products.added_to_cart')),
+        added_to_wishlist: @json(__('products.added_to_wishlist')),
+        removed_from_wishlist: @json(__('products.removed_from_wishlist')),
+        network_error: @json(__('products.network_error')),
+        out_of_stock: @json(__('products.out_of_stock')),
+        in_stock: @json(__('products.in_stock')),
+        in_stock_count: @json(__('products.in_stock_count')),
+        select_variant_first: @json(__('products.select_variant_first')),
+        variant_out_of_stock: @json(__('products.variant_out_of_stock')),
+        failed_to_add_to_cart: @json(__('products.failed_to_add_to_cart')),
+        error_adding_to_cart: @json(__('products.error_adding_to_cart')),
+        failed_to_add_to_wishlist: @json(__('products.failed_to_add_to_wishlist')),
+        requested_qty_not_available: @json(__('products.requested_qty_not_available')),
+        adding: @json(__('products.adding'))
+    };
+    </script>
 @endpush
 
 @section('content')
@@ -54,15 +81,14 @@
     </div>
     <div class="container">
         <!-- Breadcrumbs -->
-        <nav class="breadcrumbs">
-            <a href="{{ route('products.index') }}">{{ __('products.home') }}</a>
-            <span>/</span>
-            @if($product->category)
-                <a href="{{ route('products.index', ['category' => $product->category->id]) }}">{{ $product->category->name }}</a>
-                <span>/</span>
-            @endif
-            <span>{{ $product->name }}</span>
-        </nav>
+        @php
+            $category = $product->category ?? $product->category()->first();
+        @endphp
+        <x-breadcrumbs :items="array_filter([
+            ['label' => __('products.all_products'), 'url' => route('products.index')],
+            $category ? ['label' => $category->name, 'url' => route('products.index', ['category' => $category->id])] : null,
+            ['label' => $product->name]
+        ])" />
 
         <!-- Product Section -->
         <div class="product-grid">
@@ -405,24 +431,4 @@
         </template>
     </div>
 </div>
-
-<script>
-// Pass translations to JS for product page
-window.productTranslations = {
-    added_to_cart: @json(__('products.added_to_cart')),
-    added_to_wishlist: @json(__('products.added_to_wishlist')),
-    removed_from_wishlist: @json(__('products.removed_from_wishlist')),
-    network_error: @json(__('products.network_error')),
-    out_of_stock: @json(__('products.out_of_stock')),
-    in_stock: @json(__('products.in_stock')),
-    in_stock_count: @json(__('products.in_stock_count')),
-    select_variant_first: @json(__('products.select_variant_first')),
-    variant_out_of_stock: @json(__('products.variant_out_of_stock')),
-    failed_to_add_to_cart: @json(__('products.failed_to_add_to_cart')),
-    error_adding_to_cart: @json(__('products.error_adding_to_cart')),
-    failed_to_add_to_wishlist: @json(__('products.failed_to_add_to_wishlist')),
-    requested_qty_not_available: @json(__('products.requested_qty_not_available')),
-    adding: @json(__('products.adding'))
-};
-</script>
 @endsection

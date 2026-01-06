@@ -38,7 +38,7 @@ function wishlistPageFactory() {
         notificationIdCounter: 0,
 
         init() {
-            console.log('Wishlist page initialized');
+            // Wishlist page initialized
         },
 
         showNotification(message, type = 'success', productName = '') {
@@ -87,7 +87,7 @@ function wishlistPageFactory() {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     }
                 });
@@ -162,7 +162,7 @@ function wishlistPageFactory() {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': window.getCsrfToken(),
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify(payload)
@@ -216,4 +216,4 @@ if (window.Alpine) {
 
 window.wishlistPage = wishlistPageFactory;
 
-console.log('Wishlist JS loaded');
+// Wishlist JS loaded

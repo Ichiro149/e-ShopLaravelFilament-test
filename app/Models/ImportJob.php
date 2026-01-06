@@ -33,4 +33,9 @@ class ImportJob extends Model
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -8,7 +8,7 @@ function cartFactory() {
         couponCode: '',
 
         init() {
-            console.log('Cart page initialized');
+            // Cart page initialized
         },
 
         updateQuantity(itemId, quantity) {
@@ -19,7 +19,7 @@ function cartFactory() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': window.getCsrfToken()
                 },
                 body: JSON.stringify({ quantity: quantity })
             })
@@ -44,7 +44,7 @@ function cartFactory() {
             fetch(`/cart/remove/${itemId}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': window.getCsrfToken()
                 }
             })
             .then(response => {
@@ -62,7 +62,7 @@ function cartFactory() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': window.getCsrfToken()
                 },
                 body: JSON.stringify({ code: this.couponCode })
             })
@@ -83,7 +83,7 @@ function cartFactory() {
             fetch('/cart/coupon/remove', {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': window.getCsrfToken()
                 }
             })
             .then(response => {
@@ -109,4 +109,4 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('cartPage', cartFactory);
 });
 
-console.log('Cart JS loaded');
+// Cart JS loaded

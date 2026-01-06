@@ -15,9 +15,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\PageController;
 use App\Livewire\AdminTicketChat;
 
 Route::get('/search', [SearchController::class, 'index'])->name('search.global');
+
+// Static pages
+Route::get('/about', [PageController::class, 'about'])->name('pages.about');
+Route::get('/contact', [PageController::class, 'contact'])->name('pages.contact');
+Route::post('/contact', [PageController::class, 'sendContact'])->name('pages.contact.send');
+Route::get('/faq', [PageController::class, 'faq'])->name('pages.faq');
+Route::get('/recently-viewed', [PageController::class, 'recentlyViewed'])->name('pages.recently-viewed');
 
 // Home
 Route::get('/', fn() => view('welcome'))->name('home');
