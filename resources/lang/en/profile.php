@@ -52,11 +52,14 @@ return [
 
     // Two-Factor Authentication
     'two_factor' => 'Two-Factor Authentication',
-    'two_factor_enabled' => '2FA is enabled',
-    'two_factor_disabled' => '2FA is disabled',
-    'two_factor_manage' => 'Manage',
+    'two_factor_enabled' => 'Enabled',
+    'two_factor_disabled' => 'Not Enabled',
+    'two_factor_protected' => 'Your account is protected with two-factor authentication.',
+    'two_factor_add_security' => 'Add an extra layer of security to your account.',
+    'two_factor_hint' => 'Use an authenticator app like Google Authenticator or Authy to generate verification codes.',
+    'two_factor_manage' => 'Manage 2FA Settings',
     'two_factor_disable' => 'Disable',
-    'two_factor_enable' => 'Enable 2FA',
+    'two_factor_enable' => 'Enable Two-Factor Auth',
     'two_factor_setup' => 'Setup Two-Factor Authentication',
     'two_factor_scan_qr' => 'Scan this QR code with your authenticator app',
     'two_factor_enter_code' => 'Enter the 6-digit code from your app',

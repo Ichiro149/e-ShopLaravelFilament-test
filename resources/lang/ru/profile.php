@@ -52,9 +52,12 @@ return [
 
     // Two-Factor Authentication
     'two_factor' => 'Двухфакторная аутентификация',
-    'two_factor_enabled' => '2FA включена',
-    'two_factor_disabled' => '2FA отключена',
-    'two_factor_manage' => 'Управление',
+    'two_factor_enabled' => 'Включена',
+    'two_factor_disabled' => 'Отключена',
+    'two_factor_protected' => 'Ваш аккаунт защищён двухфакторной аутентификацией.',
+    'two_factor_add_security' => 'Добавьте дополнительный уровень защиты вашего аккаунта.',
+    'two_factor_hint' => 'Используйте приложение-аутентификатор (Google Authenticator, Authy) для генерации кодов.',
+    'two_factor_manage' => 'Настройки 2FA',
     'two_factor_disable' => 'Отключить',
     'two_factor_enable' => 'Включить 2FA',
     'two_factor_setup' => 'Настройка двухфакторной аутентификации',

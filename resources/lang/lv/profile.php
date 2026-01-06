@@ -61,9 +61,12 @@ return [
 
     // Two-Factor Authentication
     'two_factor' => 'Divfaktoru autentifikācija',
-    'two_factor_enabled' => '2FA ir iespējota',
-    'two_factor_disabled' => '2FA ir atspējota',
-    'two_factor_manage' => 'Pārvaldīt',
+    'two_factor_enabled' => 'Iespējota',
+    'two_factor_disabled' => 'Nav iespējota',
+    'two_factor_protected' => 'Jūsu konts ir aizsargāts ar divfaktoru autentifikāciju.',
+    'two_factor_add_security' => 'Pievienojiet papildu drošības līmeni savam kontam.',
+    'two_factor_hint' => 'Izmantojiet autentifikatora lietotni (Google Authenticator, Authy) verifikācijas kodu ģenerēšanai.',
+    'two_factor_manage' => '2FA iestatījumi',
     'two_factor_disable' => 'Atspējot',
     'two_factor_enable' => 'Iespējot 2FA',
     'two_factor_setup' => 'Divfaktoru autentifikācijas iestatīšana',
