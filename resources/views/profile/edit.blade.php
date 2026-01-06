@@ -119,6 +119,54 @@
           </form>
         </section>
 
+        {{-- Two-Factor Authentication --}}
+        <section class="profile-section">
+          <div class="section-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <h2>{{ __('Two-Factor Authentication') }}</h2>
+          </div>
+
+          @if($user->hasTwoFactorEnabled())
+            {{-- 2FA Enabled --}}
+            <div class="two-factor-status two-factor-status--enabled">
+              <div class="status-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="status-text">
+                <strong>{{ __('Enabled') }}</strong>
+                <span>{{ __('Your account is protected with two-factor authentication.') }}</span>
+              </div>
+            </div>
+
+            <div class="two-factor-actions">
+              <a href="{{ route('two-factor.index') }}" class="btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                {{ __('Manage 2FA Settings') }}
+              </a>
+            </div>
+          @else
+            {{-- 2FA Not Enabled --}}
+            <div class="two-factor-status two-factor-status--disabled">
+              <div class="status-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="status-text">
+                <strong>{{ __('Not Enabled') }}</strong>
+                <span>{{ __('Add an extra layer of security to your account.') }}</span>
+              </div>
+            </div>
+
+            <div class="two-factor-actions">
+              <a href="{{ route('two-factor.setup') }}" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                {{ __('Enable Two-Factor Auth') }}
+              </a>
+            </div>
+
+            <p class="section-hint">{{ __('Use an authenticator app like Google Authenticator or Authy to generate verification codes.') }}</p>
+          @endif
+        </section>
+
         {{-- Danger Zone --}}
         <section class="profile-section profile-section--danger">
           <div class="section-header">
