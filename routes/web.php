@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CouponController;
@@ -33,6 +34,10 @@ Route::get('/', fn () => view('welcome'))->name('home');
 // Two-Factor Authentication Challenge (for login flow)
 Route::get('two-factor-challenge', [TwoFactorChallengeController::class, 'show'])->name('two-factor.challenge');
 Route::post('two-factor-challenge', [TwoFactorChallengeController::class, 'verify'])->name('two-factor.verify');
+
+// Google OAuth
+Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+Route::get('auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
 // Guest routes: registration / login
 Route::middleware('guest')->group(function () {
