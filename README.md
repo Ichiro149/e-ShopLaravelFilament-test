@@ -73,8 +73,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/shoply.git
-cd shoply
+git clone https://github.com/Vlad8733/LaravelFilament-test.git
+cd Filament-test
 
 # Install PHP dependencies
 composer install
