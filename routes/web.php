@@ -233,29 +233,29 @@ Route::middleware(['auth'])->prefix('reviews')->name('reviews.')->group(function
 Route::middleware(['auth'])->prefix('settings')->name('settings.')->group(function () {
     Route::get('/', [App\Http\Controllers\SettingsController::class, 'index'])->name('index');
     Route::post('/locale', [App\Http\Controllers\SettingsController::class, 'updateLocale'])->name('locale');
-    
+
     // Password
     Route::post('/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('password.update');
-    
+
     // Addresses
     Route::post('/addresses', [App\Http\Controllers\SettingsController::class, 'storeAddress'])->name('addresses.store');
     Route::put('/addresses/{address}', [App\Http\Controllers\SettingsController::class, 'updateAddress'])->name('addresses.update');
     Route::delete('/addresses/{address}', [App\Http\Controllers\SettingsController::class, 'deleteAddress'])->name('addresses.destroy');
     Route::post('/addresses/{address}/default', [App\Http\Controllers\SettingsController::class, 'setDefaultAddress'])->name('addresses.default');
-    
+
     // Payment Methods
     Route::post('/payment-methods', [App\Http\Controllers\SettingsController::class, 'storePaymentMethod'])->name('payment-methods.store');
     Route::put('/payment-methods/{paymentMethod}', [App\Http\Controllers\SettingsController::class, 'updatePaymentMethod'])->name('payment-methods.update');
     Route::delete('/payment-methods/{paymentMethod}', [App\Http\Controllers\SettingsController::class, 'deletePaymentMethod'])->name('payment-methods.destroy');
     Route::post('/payment-methods/{paymentMethod}/default', [App\Http\Controllers\SettingsController::class, 'setDefaultPaymentMethod'])->name('payment-methods.default');
-    
+
     // Social Accounts
     Route::delete('/social-accounts/{socialAccount}', [App\Http\Controllers\SettingsController::class, 'unlinkSocialAccount'])->name('social-accounts.unlink');
-    
+
     // Newsletter & Subscriptions
     Route::post('/newsletter', [App\Http\Controllers\SettingsController::class, 'updateNewsletter'])->name('newsletter.update');
     Route::delete('/unfollow-company/{company}', [App\Http\Controllers\SettingsController::class, 'unfollowCompany'])->name('unfollow-company');
-    
+
     // Login History
     Route::get('/login-history', [App\Http\Controllers\SettingsController::class, 'getLoginHistory'])->name('login-history');
 });

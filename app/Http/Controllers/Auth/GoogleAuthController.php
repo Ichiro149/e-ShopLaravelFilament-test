@@ -41,7 +41,7 @@ class GoogleAuthController extends Controller
             if ($googleUser->getAvatar() && $user->google_avatar !== $googleUser->getAvatar()) {
                 $user->update(['google_avatar' => $googleUser->getAvatar()]);
             }
-            
+
             // Update/create social account record
             $this->updateSocialAccount($user, $googleUser);
 
@@ -57,7 +57,7 @@ class GoogleAuthController extends Controller
                 'google_id' => $googleUser->getId(),
                 'google_avatar' => $googleUser->getAvatar(),
             ]);
-            
+
             // Create social account record
             $this->updateSocialAccount($user, $googleUser);
 
@@ -73,13 +73,13 @@ class GoogleAuthController extends Controller
             'email_verified_at' => now(),
             'password' => null,
         ]);
-        
+
         // Create social account record
         $this->updateSocialAccount($user, $googleUser);
 
         return $this->loginUser($user);
     }
-    
+
     /**
      * Update or create social account record
      */
@@ -96,8 +96,8 @@ class GoogleAuthController extends Controller
                 'provider_avatar' => $googleUser->getAvatar(),
                 'token' => $googleUser->token,
                 'refresh_token' => $googleUser->refreshToken,
-                'token_expires_at' => $googleUser->expiresIn 
-                    ? now()->addSeconds($googleUser->expiresIn) 
+                'token_expires_at' => $googleUser->expiresIn
+                    ? now()->addSeconds($googleUser->expiresIn)
                     : null,
             ]
         );
@@ -116,7 +116,7 @@ class GoogleAuthController extends Controller
         }
 
         Auth::login($user, remember: true);
-        
+
         // Record login
         LoginHistory::recordLogin($user, request()->ip(), request()->userAgent(), true);
 

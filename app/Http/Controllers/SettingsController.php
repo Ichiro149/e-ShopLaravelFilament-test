@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Models\LoginHistory;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\SocialAccount;
@@ -23,7 +22,7 @@ class SettingsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         return view('settings.index', [
             'loginHistories' => $user->loginHistories()->latest('logged_in_at')->limit(10)->get(),
             'addresses' => $user->addresses()->orderByDesc('is_default')->get(),
@@ -64,7 +63,7 @@ class SettingsController extends Controller
 
         $user = Auth::user();
 
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (! Hash::check($request->current_password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => __('settings.current_password_incorrect'),
@@ -242,7 +241,7 @@ class SettingsController extends Controller
 
         // Note: In production, you would get a token from Stripe/PayPal here
         // We're storing a mock token for demonstration
-        $mockToken = 'tok_' . bin2hex(random_bytes(12));
+        $mockToken = 'tok_'.bin2hex(random_bytes(12));
 
         $paymentMethod = $user->paymentMethods()->create([
             'type' => $request->type,
@@ -293,7 +292,7 @@ class SettingsController extends Controller
         ];
 
         // Update card number if provided (not masked)
-        if ($request->last_four && !str_contains($request->input('card_number', ''), '*')) {
+        if ($request->last_four && ! str_contains($request->input('card_number', ''), '*')) {
             $updateData['last_four'] = $request->last_four;
             if ($request->brand) {
                 $updateData['brand'] = $request->brand;
@@ -359,7 +358,7 @@ class SettingsController extends Controller
         $provider = $socialAccount->provider_display;
         $socialAccount->delete();
 
-        activity_log('social_account_unlinked:' . $provider);
+        activity_log('social_account_unlinked:'.$provider);
 
         return response()->json([
             'success' => true,
@@ -383,8 +382,8 @@ class SettingsController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => $subscribed 
-                ? __('settings.newsletter_subscribed') 
+            'message' => $subscribed
+                ? __('settings.newsletter_subscribed')
                 : __('settings.newsletter_unsubscribed'),
         ]);
     }

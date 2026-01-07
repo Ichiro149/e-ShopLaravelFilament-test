@@ -47,11 +47,11 @@ class LoginHistory extends Model
         }
 
         // Detect browser
-        if (preg_match('/Chrome\/[\d.]+/i', $userAgent) && !preg_match('/Edg/i', $userAgent)) {
+        if (preg_match('/Chrome\/[\d.]+/i', $userAgent) && ! preg_match('/Edg/i', $userAgent)) {
             $browser = 'Chrome';
         } elseif (preg_match('/Firefox\/[\d.]+/i', $userAgent)) {
             $browser = 'Firefox';
-        } elseif (preg_match('/Safari\/[\d.]+/i', $userAgent) && !preg_match('/Chrome/i', $userAgent)) {
+        } elseif (preg_match('/Safari\/[\d.]+/i', $userAgent) && ! preg_match('/Chrome/i', $userAgent)) {
             $browser = 'Safari';
         } elseif (preg_match('/Edg\/[\d.]+/i', $userAgent)) {
             $browser = 'Edge';
@@ -64,7 +64,7 @@ class LoginHistory extends Model
             $platform = 'Windows';
         } elseif (preg_match('/Macintosh|Mac OS/i', $userAgent)) {
             $platform = 'macOS';
-        } elseif (preg_match('/Linux/i', $userAgent) && !preg_match('/Android/i', $userAgent)) {
+        } elseif (preg_match('/Linux/i', $userAgent) && ! preg_match('/Android/i', $userAgent)) {
             $platform = 'Linux';
         } elseif (preg_match('/Android/i', $userAgent)) {
             $platform = 'Android';
@@ -99,7 +99,7 @@ class LoginHistory extends Model
      */
     public function getDeviceIconAttribute(): string
     {
-        return match($this->device) {
+        return match ($this->device) {
             'mobile' => '📱',
             'tablet' => '📲',
             default => '💻',

@@ -88,14 +88,18 @@ class Order extends Model
         // Отправка уведомлений при смене статуса
         if ($oldStatusId !== $statusId) {
             // Отправка in-app уведомления пользователю (если есть user_id)
-            if ($this->user_id && $this->user) {
-                try {
-                    $this->user->notify(new \App\Notifications\OrderStatusChanged($this));
-                } catch (\Exception $e) {
-                    \Log::warning('Failed to send in-app order notification: '.$e->getMessage());
+            if ($this->user_id) {
+                /** @var User|null $user */
+                $user = $this->user;
+                if ($user) {
+                    try {
+                        $user->notify(new \App\Notifications\OrderStatusChanged($this));
+                    } catch (\Exception $e) {
+                        \Log::warning('Failed to send in-app order notification: '.$e->getMessage());
+                    }
                 }
             }
-            
+
             // Отправка email уведомления
             try {
                 \Illuminate\Support\Facades\Notification::route('mail', $this->customer_email)

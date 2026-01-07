@@ -3,7 +3,6 @@
 namespace App\Filament\Seller\Resources\OrderResource\Pages;
 
 use App\Filament\Seller\Resources\OrderResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditOrder extends EditRecord
@@ -21,7 +20,7 @@ class EditOrder extends EditRecord
     {
         // Get old status to check if it changed
         $oldStatusId = $this->record->order_status_id;
-        
+
         // If status changed, use updateStatus method to trigger notifications
         if (isset($data['order_status_id']) && $data['order_status_id'] != $oldStatusId) {
             $this->record->updateStatus(
@@ -32,7 +31,7 @@ class EditOrder extends EditRecord
             // Remove from data to avoid double update
             unset($data['order_status_id']);
         }
-        
+
         return $data;
     }
 }

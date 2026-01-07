@@ -7,9 +7,7 @@ use App\Models\Ticket;
 use App\Notifications\TicketReplied;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\On;
 
 class TicketChat extends Page
 {
@@ -22,41 +20,41 @@ class TicketChat extends Page
     public $record;
 
     public $newMessage = '';
-    
+
     public $attachments = [];
-    
+
     public $messagesCount = 0;
 
     public function mount($record): void
     {
         $this->record = Ticket::with(['messages.user', 'messages.attachments', 'user'])->findOrFail($record);
         $this->messagesCount = $this->record->messages()->count();
-        
+
         // Mark all unread messages as read
         $this->record->messages()
             ->where('is_admin_reply', false)
             ->where('is_read', false)
             ->update(['is_read' => true]);
     }
-    
+
     /**
      * Polling method - check for new messages every 3 seconds
      */
     public function checkNewMessages(): void
     {
         $currentCount = $this->record->messages()->count();
-        
+
         if ($currentCount > $this->messagesCount) {
             $this->messagesCount = $currentCount;
             $this->record->refresh();
             $this->record->load(['messages.user', 'messages.attachments']);
-            
+
             // Mark new messages as read
             $this->record->messages()
                 ->where('is_admin_reply', false)
                 ->where('is_read', false)
                 ->update(['is_read' => true]);
-                
+
             $this->dispatch('scroll-to-bottom');
         }
     }
@@ -75,7 +73,7 @@ class TicketChat extends Page
         ]);
 
         // Handle attachments
-        if (!empty($this->attachments)) {
+        if (! empty($this->attachments)) {
             foreach ($this->attachments as $file) {
                 $path = $file->store('ticket-attachments', 'public');
                 $message->attachments()->create([
@@ -110,10 +108,10 @@ class TicketChat extends Page
             ->success()
             ->title('Message sent!')
             ->send();
-            
+
         $this->dispatch('scroll-to-bottom');
     }
-    
+
     public function removeAttachment($index)
     {
         unset($this->attachments[$index]);

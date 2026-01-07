@@ -89,7 +89,7 @@ class UserAddress extends Model
      */
     public function getLabelIconAttribute(): string
     {
-        return match(strtolower($this->label)) {
+        return match (strtolower($this->label)) {
             'home' => '🏠',
             'work' => '🏢',
             'office' => '🏢',

@@ -156,10 +156,10 @@ class OrderResource extends Resource
                     ])
                     ->action(function (array $data, Order $record): void {
                         // Update tracking number if provided
-                        if (!empty($data['tracking_number'])) {
+                        if (! empty($data['tracking_number'])) {
                             $record->update(['tracking_number' => $data['tracking_number']]);
                         }
-                        
+
                         // Update status
                         $record->updateStatus(
                             $data['order_status_id'],
@@ -202,7 +202,7 @@ class OrderResource extends Resource
                         \Filament\Notifications\Notification::make()
                             ->success()
                             ->title('Statuses Updated')
-                            ->body(count($records) . ' orders have been updated.')
+                            ->body(count($records).' orders have been updated.')
                             ->send();
                     })
                     ->deselectRecordsAfterCompletion(),

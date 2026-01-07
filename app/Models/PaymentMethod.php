@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * PaymentMethod - stores ONLY tokens and masked data
- * 
+ *
  * IMPORTANT: This model does NOT store:
  * - Full card numbers
  * - CVV/CVC codes
  * - Full expiry dates in raw form
- * 
+ *
  * It stores only:
  * - Payment gateway tokens (for recurring payments)
  * - Last 4 digits (for display purposes)
@@ -69,7 +69,7 @@ class PaymentMethod extends Model
      */
     public function checkExpired(): bool
     {
-        if (!$this->expiry_month || !$this->expiry_year) {
+        if (! $this->expiry_month || ! $this->expiry_year) {
             return false;
         }
 
@@ -93,7 +93,7 @@ class PaymentMethod extends Model
      */
     public function getMaskedNumberAttribute(): string
     {
-        if (!$this->last_four) {
+        if (! $this->last_four) {
             return '•••• •••• •••• ••••';
         }
 
@@ -105,7 +105,7 @@ class PaymentMethod extends Model
      */
     public function getExpiryStringAttribute(): string
     {
-        if (!$this->expiry_month || !$this->expiry_year) {
+        if (! $this->expiry_month || ! $this->expiry_year) {
             return '';
         }
 
@@ -117,7 +117,7 @@ class PaymentMethod extends Model
      */
     public function getBrandIconAttribute(): string
     {
-        return match(strtolower($this->brand ?? '')) {
+        return match (strtolower($this->brand ?? '')) {
             'visa' => '💳',
             'mastercard' => '💳',
             'amex', 'american express' => '💳',
@@ -131,7 +131,7 @@ class PaymentMethod extends Model
      */
     public function getBrandDisplayAttribute(): string
     {
-        return match(strtolower($this->brand ?? '')) {
+        return match (strtolower($this->brand ?? '')) {
             'visa' => 'Visa',
             'mastercard' => 'Mastercard',
             'amex', 'american express' => 'American Express',

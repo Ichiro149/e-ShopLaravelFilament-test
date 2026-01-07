@@ -72,7 +72,7 @@ class TwoFactorChallengeController extends Controller
         $request->session()->forget(['2fa:user:id', '2fa:user:remember']);
 
         Auth::login($user, $remember);
-        
+
         // Record successful login with 2FA
         LoginHistory::recordLogin($user, $request->ip(), $request->userAgent(), true);
 

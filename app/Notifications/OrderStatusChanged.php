@@ -35,7 +35,7 @@ class OrderStatusChanged extends Notification
     public function toArray($notifiable): array
     {
         $statusName = $this->order->orderStatus?->name ?? 'Updated';
-        
+
         return [
             'type' => 'order_status',
             'order_id' => $this->order->id,

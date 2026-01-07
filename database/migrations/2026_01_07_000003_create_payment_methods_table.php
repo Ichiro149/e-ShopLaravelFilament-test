@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('is_default')->default(false);
             $table->boolean('is_expired')->default(false);
             $table->timestamps();
-            
+
             $table->index(['user_id', 'is_default']);
         });
     }

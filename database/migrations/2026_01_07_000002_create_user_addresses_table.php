@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('country');
             $table->boolean('is_default')->default(false);
             $table->timestamps();
-            
+
             $table->index(['user_id', 'is_default']);
         });
     }

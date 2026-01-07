@@ -40,7 +40,7 @@ class SocialAccount extends Model
      */
     public function getProviderIconAttribute(): string
     {
-        return match(strtolower($this->provider)) {
+        return match (strtolower($this->provider)) {
             'google' => '🔴',
             'facebook' => '🔵',
             'github' => '⚫',
@@ -55,7 +55,7 @@ class SocialAccount extends Model
      */
     public function getProviderDisplayAttribute(): string
     {
-        return match(strtolower($this->provider)) {
+        return match (strtolower($this->provider)) {
             'google' => 'Google',
             'facebook' => 'Facebook',
             'github' => 'GitHub',
@@ -71,7 +71,7 @@ class SocialAccount extends Model
      */
     public function isTokenExpired(): bool
     {
-        if (!$this->token_expires_at) {
+        if (! $this->token_expires_at) {
             return false;
         }
 
@@ -121,8 +121,8 @@ class SocialAccount extends Model
                 'provider_avatar' => $socialUser['avatar'] ?? null,
                 'token' => $socialUser['token'] ?? null,
                 'refresh_token' => $socialUser['refresh_token'] ?? null,
-                'token_expires_at' => isset($socialUser['expires_in']) 
-                    ? now()->addSeconds($socialUser['expires_in']) 
+                'token_expires_at' => isset($socialUser['expires_in'])
+                    ? now()->addSeconds($socialUser['expires_in'])
                     : null,
             ]
         );

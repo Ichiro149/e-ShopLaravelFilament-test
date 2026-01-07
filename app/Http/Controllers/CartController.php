@@ -209,7 +209,7 @@ class CartController extends Controller
         $total = $subtotal - $discount;
 
         $cartCount = $cartItems->sum('quantity');
-        
+
         // Get saved addresses and payment methods
         $user = Auth::user();
         $savedAddresses = $user->addresses()->orderByDesc('is_default')->get();

@@ -24,28 +24,28 @@ class UserResource extends Resource
     public static function form(Forms\Form $form): Forms\Form
     {
         $isSuperAdmin = Auth::user()?->isSuperAdmin() ?? false;
-        
+
         return $form->schema([
             Forms\Components\TextInput::make('name')->required()->maxLength(255),
             Forms\Components\TextInput::make('email')->required()->email()->maxLength(255),
-            
+
             Forms\Components\Section::make('Roles & Permissions')
                 ->schema([
                     Forms\Components\Select::make('role')
                         ->label('Role')
                         ->options([
                             User::ROLE_USER => 'User',
-                            User::ROLE_SELLER => 'Seller', 
+                            User::ROLE_SELLER => 'Seller',
                             User::ROLE_ADMIN => 'Admin',
                         ])
                         ->default(User::ROLE_USER)
-                        ->disabled(fn () => !$isSuperAdmin)
-                        ->helperText(fn () => !$isSuperAdmin ? 'Only Super Admin can change roles' : null),
-                        
+                        ->disabled(fn () => ! $isSuperAdmin)
+                        ->helperText(fn () => ! $isSuperAdmin ? 'Only Super Admin can change roles' : null),
+
                     Forms\Components\Toggle::make('is_seller')
                         ->label('Is Seller (legacy)')
-                        ->disabled(fn () => !$isSuperAdmin)
-                        ->helperText(fn () => !$isSuperAdmin ? 'Only Super Admin can change this' : null),
+                        ->disabled(fn () => ! $isSuperAdmin)
+                        ->helperText(fn () => ! $isSuperAdmin ? 'Only Super Admin can change this' : null),
                 ])
                 ->columns(2)
                 ->visible(fn () => $isSuperAdmin),
@@ -79,7 +79,7 @@ class UserResource extends Resource
                         $record->update(['is_seller' => ! $record->is_seller]);
                     })
                     ->visible(fn () => Auth::user()?->isSuperAdmin()),
-                    
+
                 Action::make('makeAdmin')
                     ->label(fn (User $record): string => $record->role === User::ROLE_ADMIN ? 'Remove Admin' : 'Make Admin')
                     ->icon(fn (User $record): string => $record->role === User::ROLE_ADMIN ? 'heroicon-s-shield-exclamation' : 'heroicon-s-shield-check')
@@ -89,8 +89,8 @@ class UserResource extends Resource
                         $newRole = $record->role === User::ROLE_ADMIN ? User::ROLE_USER : User::ROLE_ADMIN;
                         $record->update(['role' => $newRole]);
                     })
-                    ->visible(fn (User $record) => Auth::user()?->isSuperAdmin() && !$record->isSuperAdmin()),
-                    
+                    ->visible(fn (User $record) => Auth::user()?->isSuperAdmin() && ! $record->isSuperAdmin()),
+
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -110,7 +110,7 @@ class UserResource extends Resource
                     ->label('Make Admins')
                     ->action(function ($records) {
                         $records->each(function ($record) {
-                            if (!$record->isSuperAdmin()) {
+                            if (! $record->isSuperAdmin()) {
                                 $record->update(['role' => User::ROLE_ADMIN]);
                             }
                         });

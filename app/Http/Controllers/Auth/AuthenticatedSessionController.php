@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
             if ($user) {
                 LoginHistory::recordLogin($user, $request->ip(), $request->userAgent(), false);
             }
-            
+
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
@@ -49,7 +49,7 @@ class AuthenticatedSessionController extends Controller
 
         // No 2FA - log in directly
         Auth::login($user, $request->boolean('remember'));
-        
+
         // Record successful login
         LoginHistory::recordLogin($user, $request->ip(), $request->userAgent(), true);
 
