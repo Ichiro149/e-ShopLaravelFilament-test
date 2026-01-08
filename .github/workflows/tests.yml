@@ -8,8 +8,11 @@ on:
 
 jobs:
   tests:
+    name: 🧪 Tests
     runs-on: ubuntu-latest
-    environment: Testing
+    environment:
+      name: Testing
+      url: https://github.com/${{ github.repository }}
 
     services:
       mysql:
@@ -74,6 +77,7 @@ jobs:
           DB_DATABASE: ":memory:"
 
   code-style:
+    name: 🎨 Code Style
     runs-on: ubuntu-latest
 
     steps:
@@ -93,6 +97,7 @@ jobs:
         run: vendor/bin/pint --test
 
   static-analysis:
+    name: 🔍 Static Analysis
     runs-on: ubuntu-latest
 
     steps:

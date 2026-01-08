@@ -7,8 +7,7 @@
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Filament](https://img.shields.io/badge/Filament-3.2-FDAE4B?style=for-the-badge&logo=laravel&logoColor=white)](https://filamentphp.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![Tests](https://img.shields.io/badge/Tests-Passing-22C55E?style=for-the-badge&logo=phpunit&logoColor=white)](#-testing)
-[![Code Style](https://img.shields.io/badge/Code%20Style-PSR--12-8A2BE2?style=for-the-badge)](#-development)
+[![Tests](https://github.com/Ichiro149/LaravelFilament-test/actions/workflows/tests.yml/badge.svg)](https://github.com/Ichiro149/LaravelFilament-test/actions/workflows/tests.yml)
 
 [![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat-square&logo=alpine.js&logoColor=white)](https://alpinejs.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
