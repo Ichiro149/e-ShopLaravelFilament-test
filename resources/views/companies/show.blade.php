@@ -42,7 +42,7 @@
                     @auth
                         @if(auth()->id() !== $company->user_id)
                             <button class="btn {{ $isFollowing ? 'btn-secondary' : 'btn-primary' }} company-follow-btn" 
-                                    data-company-id="{{ $company->id }}"
+                                    data-company-slug="{{ $company->slug }}"
                                     data-following="{{ $isFollowing ? 'true' : 'false' }}">
                                 <span class="follow-text">{{ $isFollowing ? __('company.unfollow') : __('company.follow') }}</span>
                             </button>
@@ -193,11 +193,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const followBtn = document.querySelector('.company-follow-btn');
     if (followBtn) {
         followBtn.addEventListener('click', async function() {
-            const companyId = this.dataset.companyId;
+            const companySlug = this.dataset.companySlug;
             const isFollowing = this.dataset.following === 'true';
             
             try {
-                const response = await fetch(`/companies/${companyId}/follow`, {
+                const response = await fetch(`/companies/${companySlug}/follow`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

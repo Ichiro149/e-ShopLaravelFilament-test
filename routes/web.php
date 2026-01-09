@@ -37,8 +37,8 @@ Route::get('/cookies', [PageController::class, 'cookies'])->name('pages.cookies'
 
 // Companies
 Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
-Route::get('/companies/{slug}', [CompanyController::class, 'show'])->name('companies.show');
 Route::post('/companies/{company}/follow', [CompanyController::class, 'toggleFollow'])->name('companies.follow')->middleware('auth');
+Route::get('/companies/{slug}', [CompanyController::class, 'show'])->name('companies.show');
 
 // Home
 Route::get('/', fn () => view('welcome'))->name('home');
