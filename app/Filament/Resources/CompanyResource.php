@@ -22,11 +22,21 @@ class CompanyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $navigationGroup = 'Shop';
+    protected static ?string $navigationGroup = 'Catalog';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Companies (Moderation)';
+    protected static ?string $navigationLabel = 'Companies';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getEloquentQuery()->count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'warning';
+    }
 
     /**
      * Optimize queries with eager loading
@@ -233,17 +243,5 @@ class CompanyResource extends Resource
             'index' => Pages\ListCompanies::route('/'),
             'edit' => Pages\EditCompany::route('/{record}/edit'),
         ];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->where('is_verified', false)->count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        $unverified = static::getEloquentQuery()->where('is_verified', false)->count();
-
-        return $unverified > 0 ? 'warning' : 'primary';
     }
 }

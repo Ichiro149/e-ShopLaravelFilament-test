@@ -20,7 +20,7 @@ class RefundRequestResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
 
-    protected static ?string $navigationGroup = 'Orders';
+    protected static ?string $navigationGroup = 'Orders & Sales';
 
     protected static ?int $navigationSort = 3;
 

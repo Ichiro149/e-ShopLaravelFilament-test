@@ -21,6 +21,18 @@ class WebhookResource extends Resource
 
     protected static ?int $navigationSort = 100;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $active = static::getModel()::where('is_active', true)->count();
+
+        return $active > 0 ? (string) $active : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'gray';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

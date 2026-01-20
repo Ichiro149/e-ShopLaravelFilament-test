@@ -20,9 +20,25 @@ class CouponResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
-    protected static ?string $navigationGroup = 'Shop';
+    protected static ?string $navigationGroup = 'Marketing';
 
     protected static ?int $navigationSort = 5;
+
+    public static function getNavigationBadge(): ?string
+    {
+        $active = static::getModel()::where('is_active', true)
+            ->where(function ($q) {
+                $q->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            })->count();
+
+        return $active > 0 ? (string) $active : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'success';
+    }
 
     public static function form(Form $form): Form
     {

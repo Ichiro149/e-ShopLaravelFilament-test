@@ -69,10 +69,18 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')
             ->navigationGroups([
-                'Shop',
-                'Users',
-                'Support',
-                'Settings',
+                \Filament\Navigation\NavigationGroup::make('Catalog')
+                    ->icon('heroicon-o-folder'),
+                \Filament\Navigation\NavigationGroup::make('Orders & Sales')
+                    ->icon('heroicon-o-shopping-cart'),
+                \Filament\Navigation\NavigationGroup::make('Users & Sellers')
+                    ->icon('heroicon-o-user-group'),
+                \Filament\Navigation\NavigationGroup::make('Marketing')
+                    ->icon('heroicon-o-megaphone'),
+                \Filament\Navigation\NavigationGroup::make('Support')
+                    ->icon('heroicon-o-chat-bubble-left-right'),
+                \Filament\Navigation\NavigationGroup::make('Settings')
+                    ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s');

@@ -21,29 +21,24 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function getNavigationLabel(): string
+    public static function getNavigationBadge(): ?string
     {
-        return __('Categories');
+        return (string) static::getModel()::count();
     }
 
-    public static function getModelLabel(): string
+    public static function getNavigationBadgeColor(): string|array|null
     {
-        return __('Category');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Categories');
+        return 'primary';
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make(__('Category Information'))
+                Forms\Components\Section::make('Category Information')
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label(__('Name'))
+                            ->label('Name')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
@@ -51,28 +46,18 @@ class CategoryResource extends Resource
                             ),
 
                         Forms\Components\TextInput::make('slug')
-                            ->label(__('Slug'))
+                            ->label('Slug')
                             ->required()
                             ->maxLength(255)
                             ->unique(Category::class, 'slug', ignoreRecord: true),
 
                         Forms\Components\Textarea::make('description')
-                            ->label(__('Description'))
+                            ->label('Description')
                             ->rows(3)
                             ->maxLength(1000),
 
-                        Forms\Components\FileUpload::make('image')
-                            ->label(__('Image'))
-                            ->image()
-                            ->directory('categories')
-                            ->maxSize(2048)
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('800')
-                            ->imageResizeTargetHeight('450'),
-
                         Forms\Components\Toggle::make('is_active')
-                            ->label(__('Active'))
+                            ->label('Active')
                             ->default(true),
                     ])
                     ->columns(2),
@@ -83,42 +68,38 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->label(__('Image'))
-                    ->circular(),
-
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('Name'))
+                    ->label('Name')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('slug')
-                    ->label(__('Slug'))
+                    ->label('Slug')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('products_count')
-                    ->label(__('Products'))
+                    ->label('Products')
                     ->counts('products')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label(__('Active'))
+                    ->label('Active')
                     ->boolean()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Created'))
+                    ->label('Created')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label(__('Active'))
+                    ->label('Active')
                     ->boolean()
-                    ->trueLabel(__('Active only'))
-                    ->falseLabel(__('Inactive only'))
+                    ->trueLabel('Active only')
+                    ->falseLabel('Inactive only')
                     ->native(false),
             ])
             ->actions([

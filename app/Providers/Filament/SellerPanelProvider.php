@@ -61,6 +61,16 @@ class SellerPanelProvider extends PanelProvider
             ])
             ->authGuard('web')
             ->sidebarCollapsibleOnDesktop()
-            ->maxContentWidth('full');
+            ->maxContentWidth('full')
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make('Company')
+                    ->icon('heroicon-o-building-storefront'),
+                \Filament\Navigation\NavigationGroup::make('Products')
+                    ->icon('heroicon-o-cube'),
+                \Filament\Navigation\NavigationGroup::make('Sales')
+                    ->icon('heroicon-o-banknotes'),
+            ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }

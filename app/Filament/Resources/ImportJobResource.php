@@ -17,9 +17,25 @@ class ImportJobResource extends Resource
 {
     protected static ?string $model = ImportJob::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
 
-    protected static ?string $navigationLabel = 'Imports';
+    protected static ?string $navigationLabel = 'Import Products';
+
+    protected static ?string $navigationGroup = 'Catalog';
+
+    protected static ?int $navigationSort = 10;
+
+    public static function getNavigationBadge(): ?string
+    {
+        $pending = static::getModel()::whereIn('status', ['pending', 'processing'])->count();
+
+        return $pending > 0 ? (string) $pending : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'warning';
+    }
 
     public static function table(Tables\Table $table): Tables\Table
     {

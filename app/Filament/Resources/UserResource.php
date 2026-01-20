@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +19,20 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'Users';
+
+    protected static ?string $navigationGroup = 'Users & Sellers';
+
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'info';
+    }
 
     public static function form(Forms\Form $form): Forms\Form
     {
@@ -56,8 +69,34 @@ class UserResource extends Resource
     {
         return $table->columns([
             TextColumn::make('id')->label('ID')->sortable(),
-            TextColumn::make('name')->searchable()->sortable(),
-            TextColumn::make('email')->searchable()->sortable(),
+            TextColumn::make('name')
+                ->searchable()
+                ->sortable()
+                ->formatStateUsing(fn (string $state, User $record): string => $record->id === Auth::id() ? $state.' (You)' : $state)
+                ->color(fn (User $record): ?string => $record->id === Auth::id() ? 'primary' : null)
+                ->weight(fn (User $record): ?string => $record->id === Auth::id() ? 'bold' : null),
+            TextColumn::make('email')
+                ->searchable()
+                ->sortable()
+                ->formatStateUsing(function (string $state, User $record): string {
+                    // Show full email only for yourself
+                    if ($record->id === Auth::id()) {
+                        return $state;
+                    }
+                    // Mask email for privacy: show first 2 chars + *** + @domain
+                    $parts = explode('@', $state);
+                    if (count($parts) === 2) {
+                        $local = $parts[0];
+                        $domain = $parts[1];
+                        $masked = substr($local, 0, 2).str_repeat('•', max(strlen($local) - 2, 3));
+
+                        return $masked.'@'.$domain;
+                    }
+
+                    return '••••@••••';
+                })
+                ->copyable()
+                ->copyableState(fn (User $record): string => $record->id === Auth::id() ? $record->email : 'Hidden'),
             TextColumn::make('role')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
@@ -67,7 +106,6 @@ class UserResource extends Resource
                     default => 'gray',
                 })
                 ->formatStateUsing(fn (string $state): string => ucfirst(str_replace('_', ' ', $state))),
-            IconColumn::make('is_seller')->boolean()->label('Seller'),
             TextColumn::make('created_at')->dateTime()->sortable(),
         ])
             ->actions([
@@ -78,7 +116,7 @@ class UserResource extends Resource
                     ->action(function (User $record): void {
                         $record->update(['is_seller' => ! $record->is_seller]);
                     })
-                    ->visible(fn () => Auth::user()?->isSuperAdmin()),
+                    ->visible(fn (User $record) => Auth::user()?->isSuperAdmin() && $record->id !== Auth::id()),
 
                 Action::make('makeAdmin')
                     ->label(fn (User $record): string => $record->role === User::ROLE_ADMIN ? 'Remove Admin' : 'Make Admin')
@@ -89,34 +127,37 @@ class UserResource extends Resource
                         $newRole = $record->role === User::ROLE_ADMIN ? User::ROLE_USER : User::ROLE_ADMIN;
                         $record->update(['role' => $newRole]);
                     })
-                    ->visible(fn (User $record) => Auth::user()?->isSuperAdmin() && ! $record->isSuperAdmin()),
+                    ->visible(fn (User $record) => Auth::user()?->isSuperAdmin() && ! $record->isSuperAdmin() && $record->id !== Auth::id()),
 
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn (User $record) => $record->id !== Auth::id() || ! Auth::user()?->isSuperAdmin()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkAction::make('makeSellers')
                     ->label('Make Sellers')
                     ->action(function ($records) {
-                        $records->each->update(['is_seller' => true]);
+                        $records->filter(fn ($r) => $r->id !== Auth::id())->each->update(['is_seller' => true]);
                     })
                     ->visible(fn () => Auth::user()?->isSuperAdmin()),
                 Tables\Actions\BulkAction::make('removeSellers')
                     ->label('Remove Sellers')
                     ->action(function ($records) {
-                        $records->each->update(['is_seller' => false]);
+                        $records->filter(fn ($r) => $r->id !== Auth::id())->each->update(['is_seller' => false]);
                     })
                     ->visible(fn () => Auth::user()?->isSuperAdmin()),
                 Tables\Actions\BulkAction::make('makeAdmins')
                     ->label('Make Admins')
                     ->action(function ($records) {
-                        $records->each(function ($record) {
-                            if (! $record->isSuperAdmin()) {
+                        $records->filter(fn ($r) => $r->id !== Auth::id() && ! $r->isSuperAdmin())
+                            ->each(function ($record) {
                                 $record->update(['role' => User::ROLE_ADMIN]);
-                            }
-                        });
+                            });
                     })
                     ->visible(fn () => Auth::user()?->isSuperAdmin()),
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->action(function ($records) {
+                        $records->filter(fn ($r) => $r->id !== Auth::id() && ! $r->isSuperAdmin())->each->delete();
+                    }),
             ]);
     }
 
