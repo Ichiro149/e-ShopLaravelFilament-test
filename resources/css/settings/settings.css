@@ -2,6 +2,9 @@
    SETTINGS PAGE - Premium Dark Theme
    ============================================ */
 
+/* Import shared variables */
+@import '../_variables.css';
+
 .settings-page {
     background: var(--bg-primary);
     min-height: 100vh;
@@ -1887,74 +1890,329 @@
 }
 
 @media (max-width: 900px) {
-    .settings-layout {
-        grid-template-columns: 1fr;
-        gap: 24px;
+    /* =============================================
+       MOBILE-FIRST NATIVE APP STYLE SETTINGS
+       Two-screen navigation: Menu → Content → Back
+       ============================================= */
+    
+    .settings-page {
+        padding: 0 !important;
+        padding-top: 100px !important;
+        min-height: 100vh !important;
+        padding-bottom: env(safe-area-inset-bottom, 20px) !important;
     }
     
-    .settings-sidebar {
-        position: static;
+    .settings-container {
+        padding: 0 !important;
+        max-width: 100% !important;
     }
     
-    .settings-nav {
-        display: flex;
-        overflow-x: auto;
-        padding: 6px;
-        gap: 4px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-    
-    .settings-nav::-webkit-scrollbar {
+    /* Hide desktop back link on mobile */
+    .settings-back {
         display: none;
     }
     
+    /* Mobile Header */
+    .settings-header {
+        position: relative !important;
+        top: auto !important;
+        z-index: 100;
+        background: var(--bg-primary);
+        padding: 20px 16px 16px;
+        margin-top: 40px !important;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .settings-title {
+        font-size: 1.75rem;
+        margin-bottom: 4px;
+    }
+    
+    .settings-subtitle {
+        font-size: 0.875rem;
+        opacity: 0.7;
+    }
+    
+    .settings-alert {
+        margin: 12px 16px;
+        border-radius: 12px;
+    }
+    
+    /* Layout: Stack navigation and content */
+    .settings-layout {
+        display: block;
+    }
+    
+    /* ===== MOBILE NAVIGATION (Menu Screen) ===== */
+    .settings-sidebar {
+        position: static;
+        display: block;
+    }
+    
+    .settings-nav {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 8px 0;
+    }
+    
+    .settings-nav-group {
+        margin-bottom: 24px;
+    }
+    
+    .settings-nav-group:last-of-type {
+        margin-bottom: 16px;
+    }
+    
+    .settings-nav-group-title {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+        padding: 0 20px 8px;
+    }
+    
+    /* Navigation items as list rows */
     .settings-nav-item {
-        flex-shrink: 0;
-        padding: 12px 16px;
-        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 16px 20px;
+        margin: 0;
+        border-radius: 0;
+        background: var(--surface);
+        border: none;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-primary);
+        font-size: 1rem;
+        font-weight: 500;
+        gap: 14px;
+        position: relative;
+        transition: background 0.15s ease;
+    }
+    
+    .settings-nav-group .settings-nav-item:first-of-type {
+        border-top: 1px solid var(--border);
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        margin-left: 12px;
+        margin-right: 12px;
+        width: calc(100% - 24px);
+    }
+    
+    .settings-nav-group .settings-nav-item:last-of-type {
+        border-bottom-left-radius: 14px;
+        border-bottom-right-radius: 14px;
+        border-bottom: none;
+        margin-left: 12px;
+        margin-right: 12px;
+        width: calc(100% - 24px);
+    }
+    
+    .settings-nav-group .settings-nav-item:not(:first-of-type):not(:last-of-type) {
+        margin-left: 12px;
+        margin-right: 12px;
+        width: calc(100% - 24px);
+    }
+    
+    .settings-nav-group .settings-nav-item:only-of-type {
+        border-radius: 14px;
+        border-bottom: none;
+    }
+    
+    .settings-nav-item:active {
+        background: var(--surface-hover);
+    }
+    
+    .settings-nav-item.active {
+        background: var(--surface);
     }
     
     .settings-nav-item.active::before {
         display: none;
     }
     
-    .settings-nav-group {
-        display: contents;
+    /* Chevron arrow on right side */
+    .settings-nav-item::after {
+        content: '';
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid var(--text-muted);
+        border-bottom: 2px solid var(--text-muted);
+        transform: translateY(-50%) rotate(-45deg);
+        opacity: 0.5;
     }
     
-    .settings-nav-group-title {
+    .settings-nav-icon {
+        width: 24px;
+        height: 24px;
+        color: var(--accent);
+        flex-shrink: 0;
+    }
+    
+    .settings-nav-divider {
         display: none;
     }
-}
-
-@media (max-width: 640px) {
-    .settings-page {
-        padding: 24px 0 60px;
+    
+    /* Analytics link styling */
+    .settings-nav-link {
+        margin: 8px 12px;
+        width: calc(100% - 24px);
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, transparent 100%);
     }
     
-    .settings-title {
-        font-size: 1.5rem;
+    .settings-nav-link::after {
+        display: none;
+    }
+    
+    .settings-nav-arrow {
+        position: absolute;
+        right: 16px;
+        width: 20px;
+        height: 20px;
+        opacity: 0.5;
+    }
+    
+    /* ===== CONTENT AREA (Detail Screen) ===== */
+    .settings-content {
+        display: none;
+        min-height: auto;
+    }
+    
+    /* When panel is open on mobile */
+    .settings-page.mobile-panel-open .settings-sidebar {
+        display: none;
+    }
+    
+    .settings-page.mobile-panel-open .settings-header {
+        display: none;
+    }
+    
+    .settings-page.mobile-panel-open .settings-content {
+        display: block;
+    }
+    
+    /* Mobile panel header with back button */
+    .mobile-panel-header {
+        display: none;
+    }
+    
+    .settings-page.mobile-panel-open .mobile-panel-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative !important;
+        top: auto !important;
+        z-index: 100;
+        background: var(--bg-primary);
+        padding: 16px;
+        margin-top: 40px !important;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .mobile-back-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        flex-shrink: 0;
+    }
+    
+    .mobile-back-btn:active {
+        background: var(--surface-hover);
+        transform: scale(0.95);
+    }
+    
+    .mobile-back-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .mobile-panel-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        flex: 1;
+    }
+    
+    /* Panel content styles */
+    .settings-panel {
+        display: none;
+        padding: 0;
+    }
+    
+    .settings-panel.active {
+        display: block;
+        animation: mobileSlideIn 0.25s ease;
+    }
+    
+    @keyframes mobileSlideIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .settings-card {
+        margin: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+    }
+    
+    .settings-card::before {
+        display: none;
     }
     
     .settings-section {
-        padding: 20px;
+        padding: 20px 16px;
     }
     
-    .settings-section-header {
-        flex-direction: column;
-        align-items: flex-start;
+    .settings-section-title {
+        font-size: 1.125rem;
+    }
+    
+    .settings-section-description {
+        font-size: 0.875rem;
+    }
+    
+    /* Form elements mobile optimization */
+    .theme-cards {
+        grid-template-columns: 1fr;
         gap: 12px;
     }
     
-    .theme-cards {
-        grid-template-columns: 1fr;
+    .theme-card {
+        padding: 16px;
     }
     
     .settings-toggle-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+        padding: 16px 0;
+    }
+    
+    .settings-toggle-info {
+        flex: 1;
     }
     
     .form-row-2col,
@@ -1967,22 +2225,129 @@
         grid-template-columns: 1fr;
     }
     
+    /* ===== MOBILE MODAL - Full screen bottom sheet ===== */
+    .settings-modal {
+        align-items: flex-end !important;
+    }
+    
+    .settings-modal-backdrop {
+        background: rgba(0, 0, 0, 0.85) !important;
+    }
+    
     .settings-modal-container {
-        max-width: 100%;
-        margin: 10px;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        max-height: 95vh !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: translateY(100%) !important;
+    }
+    
+    .settings-modal.active .settings-modal-container {
+        transform: translateY(0) !important;
+    }
+    
+    .settings-modal-content {
+        border-radius: 20px 20px 0 0 !important;
+        border: none !important;
+        border-top: 1px solid var(--border) !important;
+    }
+    
+    .settings-modal-header {
+        padding: 16px 16px 12px !important;
+        position: relative;
+    }
+    
+    /* Drag handle indicator */
+    .settings-modal-header::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 36px;
+        height: 4px;
+        background: var(--border-strong);
+        border-radius: 2px;
+    }
+    
+    .settings-modal-title {
+        font-size: 1rem !important;
+        padding-top: 8px;
+    }
+    
+    .settings-modal-close {
+        width: 36px !important;
+        height: 36px !important;
+        margin-top: 4px;
     }
     
     .settings-modal-body {
-        max-height: 70vh;
+        padding: 16px !important;
+        max-height: calc(95vh - 140px) !important;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 20px)) !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .settings-modal-footer {
+        padding: 12px 16px !important;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 20px)) !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .settings-modal-footer .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 14px 20px !important;
+    }
+    
+    /* Form rows in modal */
+    .settings-modal .form-row-2col,
+    .settings-modal .form-row-3col {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .settings-modal .form-input,
+    .settings-modal .form-select {
+        padding: 14px 16px !important;
+        font-size: 16px !important; /* Prevents iOS zoom */
+    }
+    
+    .settings-modal .form-label {
+        font-size: 0.8125rem !important;
+        margin-bottom: 6px !important;
     }
     
     .settings-2fa-status {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
     }
     
     .newsletter-content {
         flex-direction: column;
+    }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+    .settings-nav-item {
+        padding: 14px 16px;
+        font-size: 0.9375rem;
+    }
+    
+    .settings-nav-icon {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .settings-section {
+        padding: 16px 12px;
     }
 }
 

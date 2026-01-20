@@ -483,20 +483,20 @@
         }
         @media (max-width: 480px) {
             .demo-banner {
-                padding: 8px 12px;
-                gap: 8px;
-                font-size: 12px;
+                padding: 3px 10px;
+                gap: 5px;
+                font-size: 11px;
             }
             .demo-banner .demo-icon {
-                width: 16px;
-                height: 16px;
+                width: 13px;
+                height: 13px;
             }
             .demo-banner .demo-text {
-                max-width: 180px;
+                font-size: 10px;
             }
             .demo-banner .demo-badge {
-                font-size: 9px;
-                padding: 3px 8px;
+                font-size: 8px;
+                padding: 1px 6px;
             }
         }
 

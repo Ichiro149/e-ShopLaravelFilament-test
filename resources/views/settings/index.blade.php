@@ -153,6 +153,16 @@
 
             <!-- Content Area -->
             <div class="settings-content">
+                <!-- Mobile Panel Header (hidden on desktop) -->
+                <div class="mobile-panel-header">
+                    <button type="button" class="mobile-back-btn" id="mobile-back-btn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <span class="mobile-panel-title" id="mobile-panel-title">{{ __('settings.nav_language') }}</span>
+                </div>
+                
                 @include('settings.panels.language')
                 @include('settings.panels.appearance')
                 @include('settings.panels.notifications')

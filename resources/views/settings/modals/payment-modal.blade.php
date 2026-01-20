@@ -1,4 +1,55 @@
 <!-- Payment Method Modal -->
+<style>
+@media (max-width: 900px) {
+    #payment-modal {
+        position: fixed !important;
+        top: -1px !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: -1px !important;
+    }
+    #payment-modal .settings-modal-backdrop {
+        position: fixed !important;
+        top: -1px !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: -1px !important;
+        height: calc(100% + 2px) !important;
+    }
+    #payment-modal .settings-modal-container {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        max-height: 90vh !important;
+        border-radius: 20px 20px 0 0 !important;
+    }
+    #payment-modal .settings-modal-content {
+        border-radius: 20px 20px 0 0 !important;
+    }
+    #payment-modal .settings-modal-body {
+        max-height: 60vh !important;
+        padding: 16px !important;
+    }
+    #payment-modal .form-row-2col {
+        display: block !important;
+    }
+    #payment-modal .form-row-2col .form-group {
+        margin-bottom: 12px;
+    }
+    #payment-modal .settings-modal-footer {
+        flex-direction: column !important;
+        padding: 12px 16px 24px !important;
+    }
+    #payment-modal .settings-modal-footer .settings-btn {
+        width: 100% !important;
+    }
+}
+</style>
 <div class="settings-modal" id="payment-modal">
     <div class="settings-modal-backdrop"></div>
     <div class="settings-modal-container">

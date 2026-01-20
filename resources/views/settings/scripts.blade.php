@@ -3,32 +3,108 @@
 document.addEventListener('DOMContentLoaded', function() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
     
+    // Mobile detection
+    const isMobile = () => window.innerWidth <= 900;
+    
     // Panel Navigation
     const navItems = document.querySelectorAll('.settings-nav-item[data-panel]');
     const panels = document.querySelectorAll('.settings-panel');
+    const settingsPage = document.querySelector('.settings-page');
+    const mobileBackBtn = document.getElementById('mobile-back-btn');
+    const mobilePanelTitle = document.getElementById('mobile-panel-title');
+    
+    // Panel titles mapping
+    const panelTitles = {
+        'language': '{{ __("settings.nav_language") }}',
+        'appearance': '{{ __("settings.nav_appearance") }}',
+        'notifications': '{{ __("settings.nav_notifications") }}',
+        'security': '{{ __("settings.nav_security") }}',
+        'login-history': '{{ __("settings.nav_login_history") }}',
+        'social-accounts': '{{ __("settings.nav_social_accounts") }}',
+        'orders': '{{ __("settings.nav_orders") }}',
+        'addresses': '{{ __("settings.nav_addresses") }}',
+        'payment-methods': '{{ __("settings.nav_payment_methods") }}',
+        'followed-companies': '{{ __("settings.nav_followed_companies") }}',
+        'newsletter': '{{ __("settings.nav_newsletter") }}'
+    };
+    
+    function openPanel(target, updateHistory = true) {
+        navItems.forEach(i => i.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        
+        const navItem = document.querySelector(`.settings-nav-item[data-panel="${target}"]`);
+        if (navItem) navItem.classList.add('active');
+        
+        const panel = document.getElementById('panel-' + target);
+        if (panel) panel.classList.add('active');
+        
+        // Mobile: show panel view
+        if (isMobile()) {
+            settingsPage?.classList.add('mobile-panel-open');
+            if (mobilePanelTitle) {
+                mobilePanelTitle.textContent = panelTitles[target] || target;
+            }
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Update URL hash
+        if (updateHistory) {
+            history.replaceState({ panel: target }, null, '#' + target);
+        }
+    }
+    
+    function closePanel() {
+        settingsPage?.classList.remove('mobile-panel-open');
+        // Scroll to top
+        window.scrollTo(0, 0);
+        // Clear hash
+        history.replaceState(null, null, window.location.pathname);
+    }
     
     navItems.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             const target = this.dataset.panel;
-            
-            navItems.forEach(i => i.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
-            
-            this.classList.add('active');
-            document.getElementById('panel-' + target)?.classList.add('active');
-            
-            // Update URL hash
-            history.replaceState(null, null, '#' + target);
+            openPanel(target);
         });
+    });
+    
+    // Mobile back button
+    if (mobileBackBtn) {
+        mobileBackBtn.addEventListener('click', closePanel);
+    }
+    
+    // Handle browser back button
+    window.addEventListener('popstate', function(e) {
+        if (isMobile()) {
+            if (e.state?.panel) {
+                openPanel(e.state.panel, false);
+            } else {
+                closePanel();
+            }
+        }
     });
     
     // Handle URL hash on load
     if (window.location.hash) {
         const target = window.location.hash.substring(1);
         const item = document.querySelector(`.settings-nav-item[data-panel="${target}"]`);
-        if (item) item.click();
+        if (item) {
+            openPanel(target, false);
+        }
     }
+    
+    // Handle resize - close mobile panel if switching to desktop
+    let wasDesktop = !isMobile();
+    window.addEventListener('resize', function() {
+        const isDesktop = !isMobile();
+        if (!wasDesktop && isDesktop) {
+            // Switched to desktop - remove mobile panel state
+            settingsPage?.classList.remove('mobile-panel-open');
+        }
+        wasDesktop = isDesktop;
+    });
     
     // Theme Selection
     const themeCards = document.querySelectorAll('.theme-card input[name="theme"]');
