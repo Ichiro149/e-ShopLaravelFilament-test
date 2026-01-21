@@ -111,8 +111,7 @@ class BanResource extends Resource
                             ->default('permanent')
                             ->live()
                             ->required()
-                            ->native(false)
-                            ->dehydrated(false),
+                            ->native(false),
 
                         Forms\Components\DateTimePicker::make('expires_at')
                             ->label('Expires At')
