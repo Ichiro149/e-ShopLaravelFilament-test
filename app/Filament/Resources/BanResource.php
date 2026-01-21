@@ -52,6 +52,7 @@ class BanResource extends Resource
                             ->required()
                             ->live()
                             ->default('account')
+                            ->native(false)
                             ->helperText(fn (Get $get) => match ($get('type')) {
                                 'account' => 'Ban specific user account',
                                 'ip' => 'Ban by IP address - affects all users from this IP',
@@ -64,7 +65,6 @@ class BanResource extends Resource
                             ->options(function () {
                                 return \App\Models\User::query()
                                     ->orderBy('name')
-                                    ->limit(100)
                                     ->get()
                                     ->mapWithKeys(fn ($user) => [
                                         $user->id => $user->username
@@ -73,19 +73,8 @@ class BanResource extends Resource
                                     ]);
                             })
                             ->searchable()
-                            ->getSearchResultsUsing(function (string $search) {
-                                return \App\Models\User::query()
-                                    ->where('name', 'like', "%{$search}%")
-                                    ->orWhere('email', 'like', "%{$search}%")
-                                    ->orWhere('username', 'like', "%{$search}%")
-                                    ->limit(50)
-                                    ->get()
-                                    ->mapWithKeys(fn ($user) => [
-                                        $user->id => $user->username
-                                            ? "{$user->name} (@{$user->username}) — {$user->email}"
-                                            : "{$user->name} — {$user->email}",
-                                    ]);
-                            })
+                            ->preload()
+                            ->native(false)
                             ->required(fn (Get $get) => $get('type') === 'account')
                             ->visible(fn (Get $get) => $get('type') === 'account')
                             ->live()
@@ -113,6 +102,7 @@ class BanResource extends Resource
                             ->label('Ban Reason')
                             ->options(Ban::REASONS)
                             ->required()
+                            ->native(false)
                             ->searchable(),
 
                         Forms\Components\Select::make('duration')
@@ -121,6 +111,7 @@ class BanResource extends Resource
                             ->default('permanent')
                             ->live()
                             ->required()
+                            ->native(false)
                             ->dehydrated(false),
 
                         Forms\Components\DateTimePicker::make('expires_at')
