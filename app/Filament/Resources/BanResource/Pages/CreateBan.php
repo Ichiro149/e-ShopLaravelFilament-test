@@ -10,6 +10,13 @@ class CreateBan extends CreateRecord
 {
     protected static string $resource = BanResource::class;
 
+    protected ?string $heading = 'Ban User';
+
+    public function getTitle(): string
+    {
+        return 'Ban User';
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['banned_by'] = Auth::id();

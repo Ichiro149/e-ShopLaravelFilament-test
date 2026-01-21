@@ -8,7 +8,7 @@
 
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Filament](https://img.shields.io/badge/Filament-3.2-FDAE4B?style=for-the-badge&logo=laravel&logoColor=white)](https://filamentphp.com)
-[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 [![Tests](https://github.com/Ichiro149/e-ShopLaravelFilament-test/actions/workflows/tests.yml/badge.svg)](https://github.com/Ichiro149/e-ShopLaravelFilament-test/actions/workflows/tests.yml)
@@ -81,13 +81,15 @@ npm run build && php artisan serve
 - 🔐 **Two-Factor Authentication** (2FA)
 - 🌍 **Multi-language** (EN, RU, LV)
 - 🌙 **Dark/Light Theme**
+- 💬 **Product Chat** with sellers
+- ⚙️ **Account Settings** (username, notifications, privacy)
 
 </td>
 <td width="50%">
 
 ### 🎛️ Admin Panel
 
-- 📊 **Dashboard** with analytics
+- 📊 **Dashboard** with analytics widgets
 - 📦 **Products** — CRUD, variants, CSV import/export
 - 🏢 **Companies** — verification, moderation
 - 📋 **Orders** — status management, history
@@ -95,7 +97,9 @@ npm run build && php artisan serve
 - 💬 **Support Tickets** — real-time chat
 - ⭐ **Reviews Moderation**
 - 💰 **Refund Requests**
-- 👥 **User Management**
+- 👥 **User Management** with ban actions
+- 🚫 **Ban System** — account, IP, fingerprint bans
+- 🔒 **Email Masking** for user privacy
 
 </td>
 </tr>
@@ -140,10 +144,10 @@ their favorite sellers
 
 | Role | Access Level |
 |:-----|:-------------|
-| 🔴 **Super Admin** | Full system access, role management |
-| 🟠 **Admin** | Manage orders, products, tickets, reviews |
-| 🟡 **Seller** | Manage own company, products, orders |
-| 🟢 **User** | Browse, purchase, submit tickets |
+| 🔴 **Super Admin** | Full system access, role management, ticket deletion |
+| 🟠 **Admin** | Manage orders, products, tickets, reviews, bans |
+| 🟡 **Seller** | Manage own company, products, orders, customer chat |
+| 🟢 **User** | Browse, purchase, submit tickets, product chat |
 
 <br/>
 

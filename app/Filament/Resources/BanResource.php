@@ -25,6 +25,10 @@ class BanResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
+    protected static ?string $modelLabel = 'Ban';
+
+    protected static ?string $pluralModelLabel = 'Bans';
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::active()->count() ?: null;
@@ -57,12 +61,31 @@ class BanResource extends Resource
 
                         Forms\Components\Select::make('user_id')
                             ->label('User')
-                            ->relationship('user', 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->username
-                                ? "{$record->name} (@{$record->username}) ({$record->email})"
-                                : "{$record->name} ({$record->email})")
-                            ->searchable(['name', 'email', 'username'])
-                            ->preload()
+                            ->options(function () {
+                                return \App\Models\User::query()
+                                    ->orderBy('name')
+                                    ->limit(100)
+                                    ->get()
+                                    ->mapWithKeys(fn ($user) => [
+                                        $user->id => $user->username
+                                            ? "{$user->name} (@{$user->username}) — {$user->email}"
+                                            : "{$user->name} — {$user->email}",
+                                    ]);
+                            })
+                            ->searchable()
+                            ->getSearchResultsUsing(function (string $search) {
+                                return \App\Models\User::query()
+                                    ->where('name', 'like', "%{$search}%")
+                                    ->orWhere('email', 'like', "%{$search}%")
+                                    ->orWhere('username', 'like', "%{$search}%")
+                                    ->limit(50)
+                                    ->get()
+                                    ->mapWithKeys(fn ($user) => [
+                                        $user->id => $user->username
+                                            ? "{$user->name} (@{$user->username}) — {$user->email}"
+                                            : "{$user->name} — {$user->email}",
+                                    ]);
+                            })
                             ->required(fn (Get $get) => $get('type') === 'account')
                             ->visible(fn (Get $get) => $get('type') === 'account')
                             ->live()

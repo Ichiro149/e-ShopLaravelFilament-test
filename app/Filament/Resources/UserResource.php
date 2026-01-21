@@ -120,70 +120,94 @@ class UserResource extends Resource
             TextColumn::make('created_at')->dateTime()->sortable(),
         ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    // Ban Actions
-                    Action::make('banAccount')
-                        ->label('Ban Account')
-                        ->icon('heroicon-o-no-symbol')
-                        ->color('danger')
-                        ->requiresConfirmation()
-                        ->modalHeading('Ban User Account')
-                        ->form([
-                            Forms\Components\Select::make('reason')
-                                ->label('Reason')
-                                ->options(Ban::REASONS)
-                                ->required(),
-                            Forms\Components\Select::make('duration')
-                                ->label('Duration')
-                                ->options(Ban::DURATIONS)
-                                ->default('permanent')
-                                ->required()
-                                ->live(),
-                            Forms\Components\DateTimePicker::make('expires_at')
-                                ->label('Expires At')
-                                ->visible(fn (Forms\Get $get) => $get('duration') === 'custom')
-                                ->required(fn (Forms\Get $get) => $get('duration') === 'custom')
-                                ->minDate(now()),
-                            Forms\Components\Textarea::make('public_message')
-                                ->label('Message to User')
-                                ->rows(2),
-                            Forms\Components\Textarea::make('admin_comment')
-                                ->label('Admin Notes (Private)')
-                                ->rows(2),
-                        ])
-                        ->action(function (User $record, array $data) {
-                            $expiresAt = null;
-                            if ($data['duration'] === 'custom') {
-                                $expiresAt = $data['expires_at'];
-                            } elseif ($data['duration'] !== 'permanent') {
-                                $expiresAt = self::calculateExpiration($data['duration']);
-                            }
+                // Main Ban button - visible immediately
+                Action::make('banAccount')
+                    ->label('Ban')
+                    ->icon('heroicon-o-no-symbol')
+                    ->color('danger')
+                    ->modalHeading('Ban User Account')
+                    ->form([
+                        Forms\Components\Select::make('reason')
+                            ->label('Reason')
+                            ->options(Ban::REASONS)
+                            ->required(),
+                        Forms\Components\Select::make('duration')
+                            ->label('Duration')
+                            ->options(Ban::DURATIONS)
+                            ->default('permanent')
+                            ->required()
+                            ->live(),
+                        Forms\Components\DateTimePicker::make('expires_at')
+                            ->label('Expires At')
+                            ->visible(fn (Forms\Get $get) => $get('duration') === 'custom')
+                            ->required(fn (Forms\Get $get) => $get('duration') === 'custom')
+                            ->minDate(now()),
+                        Forms\Components\Textarea::make('public_message')
+                            ->label('Message to User')
+                            ->rows(2),
+                        Forms\Components\Textarea::make('admin_comment')
+                            ->label('Admin Notes (Private)')
+                            ->rows(2),
+                    ])
+                    ->action(function (User $record, array $data) {
+                        $expiresAt = null;
+                        if ($data['duration'] === 'custom') {
+                            $expiresAt = $data['expires_at'];
+                        } elseif ($data['duration'] !== 'permanent') {
+                            $expiresAt = self::calculateExpiration($data['duration']);
+                        }
 
-                            Ban::banAccount(
-                                $record->id,
-                                $data['reason'],
-                                $data['admin_comment'] ?? null,
-                                $data['public_message'] ?? null,
-                                $expiresAt ? new \DateTime($expiresAt) : null,
-                                Auth::id()
-                            );
+                        Ban::banAccount(
+                            $record->id,
+                            $data['reason'],
+                            $data['admin_comment'] ?? null,
+                            $data['public_message'] ?? null,
+                            $expiresAt ? new \DateTime($expiresAt) : null,
+                            Auth::id()
+                        );
+
+                        \Filament\Notifications\Notification::make()
+                            ->success()
+                            ->title('User banned')
+                            ->send();
+                    })
+                    ->visible(fn (User $record) => $record->id !== Auth::id() &&
+                        ! $record->isSuperAdmin() &&
+                        Ban::checkAccountBan($record->id) === null
+                    ),
+
+                // Unban button
+                Action::make('unban')
+                    ->label('Unban')
+                    ->icon('heroicon-o-lock-open')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Unban User')
+                    ->form([
+                        Forms\Components\Textarea::make('reason')
+                            ->label('Reason for unban')
+                            ->required(),
+                    ])
+                    ->action(function (User $record, array $data) {
+                        $ban = Ban::checkAccountBan($record->id);
+                        if ($ban) {
+                            $ban->unban(Auth::id(), $data['reason']);
 
                             \Filament\Notifications\Notification::make()
                                 ->success()
-                                ->title('User banned')
+                                ->title('User unbanned')
                                 ->send();
-                        })
-                        ->visible(fn (User $record) => $record->id !== Auth::id() &&
-                            ! $record->isSuperAdmin() &&
-                            Ban::checkAccountBan($record->id) === null
-                        ),
+                        }
+                    })
+                    ->visible(fn (User $record) => Ban::checkAccountBan($record->id) !== null),
 
+                // Additional ban actions in dropdown
+                Tables\Actions\ActionGroup::make([
                     Action::make('banIp')
-                        ->label('Ban User IP')
+                        ->label('Ban IP')
                         ->icon('heroicon-o-globe-alt')
                         ->color('danger')
-                        ->requiresConfirmation()
-                        ->modalHeading('Ban User\'s IP Address')
+                        ->modalHeading('Ban User IP Address')
                         ->form([
                             Forms\Components\Select::make('reason')
                                 ->label('Reason')
@@ -235,36 +259,13 @@ class UserResource extends Resource
                             Auth::user()?->role === 'super_admin'
                         ),
 
-                    Action::make('unban')
-                        ->label('Unban User')
-                        ->icon('heroicon-o-lock-open')
-                        ->color('success')
-                        ->requiresConfirmation()
-                        ->form([
-                            Forms\Components\Textarea::make('reason')
-                                ->label('Reason for unban')
-                                ->required(),
-                        ])
-                        ->action(function (User $record, array $data) {
-                            $ban = Ban::checkAccountBan($record->id);
-                            if ($ban) {
-                                $ban->unban(Auth::id(), $data['reason']);
-
-                                \Filament\Notifications\Notification::make()
-                                    ->success()
-                                    ->title('User unbanned')
-                                    ->send();
-                            }
-                        })
-                        ->visible(fn (User $record) => Ban::checkAccountBan($record->id) !== null),
-
                     Action::make('viewBans')
                         ->label('View Bans')
                         ->icon('heroicon-o-eye')
                         ->color('gray')
                         ->url(fn (User $record) => BanResource::getUrl('index', ['tableFilters[user_id][value]' => $record->id]))
                         ->visible(fn (User $record) => Ban::where('user_id', $record->id)->exists()),
-                ])->label('Ban Actions')->icon('heroicon-o-no-symbol')->color('danger'),
+                ])->icon('heroicon-o-ellipsis-vertical'),
 
                 Action::make('toggleSeller')
                     ->label(fn (User $record): string => $record->is_seller ? 'Demote' : 'Promote to Seller')

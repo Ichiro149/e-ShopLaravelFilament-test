@@ -30,7 +30,8 @@ class ListBans extends ListRecords
                         ->send();
                 }),
 
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Ban User'),
         ];
     }
 }
